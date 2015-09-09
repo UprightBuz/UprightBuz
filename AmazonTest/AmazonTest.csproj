@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{24EC6A14-E28E-4611-83F9-2B5E28737886}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AmazonTest</RootNamespace>
+    <AssemblyName>AmazonTest</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="runtime-src\AbstractMwsObject.cs" />
+    <Compile Include="runtime-src\IMwsCall.cs" />
+    <Compile Include="runtime-src\IMwsObject.cs" />
+    <Compile Include="runtime-src\IMwsReader.cs" />
+    <Compile Include="runtime-src\IMwsRequestType.cs" />
+    <Compile Include="runtime-src\IMwsWriter.cs" />
+    <Compile Include="runtime-src\MwsAQCall.cs" />
+    <Compile Include="runtime-src\MwsConnection.cs" />
+    <Compile Include="runtime-src\MwsException.cs" />
+    <Compile Include="runtime-src\MwsResponseHeaderMetadata.cs" />
+    <Compile Include="runtime-src\MwsResponseMetadata.cs" />
+    <Compile Include="runtime-src\MwsUtil.cs" />
+    <Compile Include="runtime-src\MwsXmlBuilder.cs" />
+    <Compile Include="runtime-src\MwsXmlReader.cs" />
+    <Compile Include="runtime-src\MwsXmlWriter.cs" />
+    <Compile Include="src\AdaptPrice.cs" />
+    <Compile Include="src\DBConnectionMysql.cs" />
+    <Compile Include="src\GlobalConfig.cs" />
+    <Compile Include="src\IniReader.cs" />
+    <Compile Include="src\MyLogger.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Attributes\MarketplaceWebServiceAttribute.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Attributes\MarketplaceWebServiceRequestHeaderAttribute.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Attributes\MarketplaceWebServiceStreamAttribute.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Attributes\RequestType.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Attributes\ResponseType.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Attributes\StreamType.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\CancelFeedSubmissionsSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\CancelReportRequestsSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\CancelReportsSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetFeedSubmissionCountSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetFeedSubmissionListByNextTokenSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetFeedSubmissionListSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetFeedSubmissionResultSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetReportCountSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetReportListByNextTokenSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetReportListSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetReportRequestCountSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetReportRequestListByNextTokenSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetReportRequestListSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetReportSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetReportScheduleCountSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetReportScheduleListByNextTokenSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\GetReportScheduleListSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\ManageReportScheduleSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\MarketplaceWebService.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\MarketplaceWebServiceClient.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\MarketplaceWebServiceConfig.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\MarketplaceWebServiceException.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\MarketplaceWebServiceSamples.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Mock\MarketplaceWebServiceMock.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\CancelFeedSubmissionsRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\CancelFeedSubmissionsResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\CancelFeedSubmissionsResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\CancelledReportRequestList.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\CancelReportRequestsRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\CancelReportRequestsResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\CancelReportRequestsResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ContentType.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\Error.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ErrorResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\FeedSubmissionInfo.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\FeedSubmissionList.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionCountRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionCountResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionCountResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionListByNextTokenRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionListByNextTokenResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionListByNextTokenResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionListRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionListResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionListResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionResultRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionResultResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetFeedSubmissionResultResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportCountRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportCountResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportCountResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportListByNextTokenRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportListByNextTokenResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportListByNextTokenResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportListRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportListResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportListResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportRequestCountRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportRequestCountResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportRequestCountResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportRequestListByNextTokenRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportRequestListByNextTokenResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportRequestListByNextTokenResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportRequestListRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportRequestListResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportRequestListResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportScheduleCountRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportScheduleCountResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportScheduleCountResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportScheduleListByNextTokenRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportScheduleListByNextTokenResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportScheduleListByNextTokenResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportScheduleListRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportScheduleListResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\GetReportScheduleListResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\IContentTypeParameter.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\IdList.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ManageReportScheduleList.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ManageReportScheduleRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ManageReportScheduleResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ManageReportScheduleResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\MediaType.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\Report.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ReportInfo.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ReportList.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ReportRequestInfo.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ReportRequestList.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ReportSchedule.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ReportScheduleList.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\RequestReportRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\RequestReportResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\RequestReportResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ResponseHeaderMetadata.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\ResponseMetadata.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\StatusList.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\SubmitFeedRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\SubmitFeedResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\SubmitFeedResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\TypeList.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\UpdatedReportAcknowledgementList.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\UpdateReportAcknowledgementsRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\UpdateReportAcknowledgementsResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\Model\UpdateReportAcknowledgementsResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\ReportSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\RequestReportSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\SubmitFeedSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceFeeds\UpdateReportAcknowledgementsSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\MarketplaceWebServiceOrders.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\MarketplaceWebServiceOrdersClient.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\MarketplaceWebServiceOrdersConfig.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\MarketplaceWebServiceOrdersException.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\MarketplaceWebServiceOrdersSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrdersMock.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\Address.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\GetOrderRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\GetOrderResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\GetOrderResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\GetServiceStatusRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\GetServiceStatusResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\GetServiceStatusResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\IMWSResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\InvoiceData.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrderItemsByNextTokenRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrderItemsByNextTokenResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrderItemsByNextTokenResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrderItemsRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrderItemsResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrderItemsResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrdersByNextTokenRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrdersByNextTokenResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrdersByNextTokenResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrdersRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrdersResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ListOrdersResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\Message.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\Money.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\Order.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\OrderItem.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\PaymentExecutionDetailItem.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\PointsGrantedDetail.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ResponseHeaderMetadata.cs" />
+    <Compile Include="src\MarketplaceWebServiceOrders\Model\ResponseMetadata.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\MarketplaceWebServiceProducts.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\MarketplaceWebServiceProductsClient.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\MarketplaceWebServiceProductsConfig.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\MarketplaceWebServiceProductsException.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\MarketplaceWebServiceProductsSample.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProductsMock.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ASINIdentifier.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ASINListType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\AttributeSetList.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\Categories.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\CompetitivePriceList.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\CompetitivePriceType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\CompetitivePricingType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\Error.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ErrorDetail.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetCompetitivePricingForASINRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetCompetitivePricingForASINResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetCompetitivePricingForASINResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetCompetitivePricingForSKURequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetCompetitivePricingForSKUResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetCompetitivePricingForSKUResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetLowestOfferListingsForASINRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetLowestOfferListingsForASINResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetLowestOfferListingsForASINResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetLowestOfferListingsForSKURequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetLowestOfferListingsForSKUResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetLowestOfferListingsForSKUResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMatchingProductForIdRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMatchingProductForIdResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMatchingProductForIdResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMatchingProductRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMatchingProductResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMatchingProductResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMyPriceForASINRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMyPriceForASINResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMyPriceForASINResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMyPriceForSKURequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMyPriceForSKUResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetMyPriceForSKUResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetProductCategoriesForASINRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetProductCategoriesForASINResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetProductCategoriesForASINResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetProductCategoriesForSKURequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetProductCategoriesForSKUResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetProductCategoriesForSKUResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetServiceStatusRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetServiceStatusResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\GetServiceStatusResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\IdentifierType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\IdListType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\IMWSResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ListMatchingProductsRequest.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ListMatchingProductsResponse.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ListMatchingProductsResult.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\LowestOfferListingList.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\LowestOfferListingType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\Message.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\MessageList.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\MoneyType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\NumberOfOfferListingsList.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\OfferListingCountType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\OffersList.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\OfferType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\Points.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\PriceType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\Product.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ProductList.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ProductsUtil.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\QualifiersType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\RelationshipList.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ResponseHeaderMetadata.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ResponseMetadata.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\SalesRankList.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\SalesRankType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\SellerSKUIdentifier.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\SellerSKUListType.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ServiceStatusEnum.cs" />
+    <Compile Include="src\MarketplaceWebServiceProducts\Model\ShippingTimeType.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\CancelFeedSubmissionsResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\CancelReportRequestsResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\ErrorResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetFeedSubmissionCountResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetFeedSubmissionListByNextTokenResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetFeedSubmissionListResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetFeedSubmissionResultResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetReportCountResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetReportListByNextTokenResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetReportListResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetReportRequestCountResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetReportRequestListByNextTokenResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetReportRequestListResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetReportResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetReportScheduleCountResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetReportScheduleListByNextTokenResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\GetReportScheduleListResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\ManageReportScheduleResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\RequestReportResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\SubmitFeedResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceFeeds\Mock\UpdateReportAcknowledgementsResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.GetOrderResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.GetServiceStatusResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.ListOrderItemsByNextTokenResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.ListOrderItemsResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.ListOrdersByNextTokenResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.ListOrdersResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetCompetitivePricingForASINResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetCompetitivePricingForSKUResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetLowestOfferListingsForASINResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetLowestOfferListingsForSKUResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetMatchingProductForIdResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetMatchingProductResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetMyPriceForASINResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetMyPriceForSKUResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetProductCategoriesForASINResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetProductCategoriesForSKUResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetServiceStatusResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.ListMatchingProductsResponse.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
