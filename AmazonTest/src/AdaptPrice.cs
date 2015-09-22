@@ -84,7 +84,7 @@ namespace AmazonTest.src
                 xmlDocument.Save(fileName);
 
                 //*** 调用submit feed方法
-                MarketplaceWebServiceSamples.SubmitFeed(fileName);
+                MarketplaceWebServiceSamples.SubmitFeed(fileName, GlobalConfig.Instance.AdaptPriceFeedType);
             }
 
 

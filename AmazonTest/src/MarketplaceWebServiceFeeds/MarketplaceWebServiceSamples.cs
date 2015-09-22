@@ -37,7 +37,7 @@ namespace MarketplaceWebService.Samples
         * Samples for Marketplace Web Service functionality
         */
 
-        public static string GetInventoryReport()
+        public static void GetReport(string reportType, string fileName)
         {
             /************************************************************************
             * Instantiate  Implementation of Marketplace Web Service 
@@ -69,24 +69,58 @@ namespace MarketplaceWebService.Samples
             reportRequest.MarketplaceIdList = new IdList();
             reportRequest.MarketplaceIdList.Id = new List<string>( new string [] { GlobalConfig.Instance.MarketplaceId } );
 
-            reportRequest.ReportType = "_GET_FLAT_FILE_OPEN_LISTINGS_DATA_";  // Inventory Report
+            reportRequest.ReportType = reportType;
+            reportRequest.StartDate = new DateTime(2015, 8, 1);
+            reportRequest.EndDate = new DateTime(2015, 9, 21);
             // @TODO: set additional request parameters here
             // request.ReportOptions = "ShowSalesChannel=true"; 
             string reportRequestId = RequestReportSample.InvokeRequestReport(service, reportRequest);
 
+            Dictionary<string, string> requestInfo = new Dictionary<string, string>();
+            requestInfo["ReportProcessingStatus"] = "";
+            requestInfo["GeneratedReportId"] = "";
+
+            /************************************************************************
+             * Uncomment to invoke Get Report Request List Action
+             ***********************************************************************/
+            {
+                GetReportRequestListRequest request = new GetReportRequestListRequest();
+                request.Merchant = GlobalConfig.Instance.SellerId;
+                //request.MWSAuthToken = "<Your MWS Auth Token>"; // Optional
+                // @TODO: set additional request parameters here
+                request.ReportRequestIdList = new IdList();
+                request.ReportRequestIdList.Id = new List<string>(new string[] { reportRequestId });
+                while(requestInfo["ReportProcessingStatus"] != "_DONE_" && requestInfo["GeneratedReportId"] == "")
+                {
+                    if(!GetReportRequestListSample.InvokeGetReportRequestList(service, request, requestInfo))
+                    {
+                        // todo “Ï≥£¥¶¿Ì
+                    }
+                    //*** Request every 60s 
+                    System.Threading.Thread.Sleep(1 * 60 * 1000);
+                }
+            }
+
             //*** 2. Using the GetReportList operation and include the ReportRequestId for the report requested. 
             //*** The operation returns a ReportId that you can then pass to the GetReport operation 50193016685
-            GetReportListRequest getReportListRequest = new GetReportListRequest();
-            getReportListRequest.Merchant = GlobalConfig.Instance.SellerId;
-            //request.MWSAuthToken = "<Your MWS Auth Token>"; // Optional
-            getReportListRequest.ReportRequestIdList = new IdList();
-            getReportListRequest.ReportRequestIdList.Id = new List<string>(new string[] { reportRequestId });
-            string reportId = "";
-            while (reportId == "")
             {
-                //*** Request every 60s 
-                System.Threading.Thread.Sleep(1 * 60 * 1000);
-                reportId = GetReportListSample.InvokeGetReportList(service, getReportListRequest);
+                if (requestInfo["ReportProcessingStatus"] == "_DONE_" && requestInfo["GeneratedReportId"] == "")
+                {
+                    
+                    GetReportListRequest getReportListRequest = new GetReportListRequest();
+                    getReportListRequest.Merchant = GlobalConfig.Instance.SellerId;
+                    //request.MWSAuthToken = "<Your MWS Auth Token>"; // Optional
+                    getReportListRequest.ReportRequestIdList = new IdList();
+                    getReportListRequest.ReportRequestIdList.Id = new List<string>(new string[] { reportRequestId });
+                    string reportId = "";
+                    while (reportId == "")
+                    {
+                        //*** Request every 60s 
+                        System.Threading.Thread.Sleep(1 * 60 * 1000);
+                        reportId = GetReportListSample.InvokeGetReportList(service, getReportListRequest);
+                    }
+                    requestInfo["reportId"] = reportId;
+                }
             }
             
 
@@ -102,16 +136,16 @@ namespace MarketplaceWebService.Samples
             // MWS in a streaming fashion. Otherwise, as your business grows you may silently reach
             // the in-memory size limit and have to re-work your solution.
             // NOTE: Due to Content-MD5 validation, the stream must be read/write.
-            getReportRequest.ReportId = reportId;
-            DateTime now = DateTime.Now;
-            string fileName = String.Format("inventoryReport/report_{0}.txt", now.ToString(GlobalConfig.Instance.TimeFormat));
-            getReportRequest.Report = File.Open(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite );
-            GetReportSample.InvokeGetReport(service, getReportRequest);
-            getReportRequest.Report.Close();
-            return fileName;
+            if (requestInfo["GeneratedReportId"] != "" || requestInfo["reportId"] != "")
+            {
+                getReportRequest.ReportId = requestInfo["GeneratedReportId"] != "" ? requestInfo["GeneratedReportId"] : requestInfo["reportId"];
+                getReportRequest.Report = File.Open(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                GetReportSample.InvokeGetReport(service, getReportRequest);
+                getReportRequest.Report.Close();
+            }
         }
 
-        public static void SubmitFeed(string fileName)
+        public static void SubmitFeed(string fileName, string feedType)
         {
             //IniReader iniReader = new IniReader(System.Environment.CurrentDirectory + "\\config.ini");
             //string awsSection = "AWS_US";
@@ -167,7 +201,7 @@ namespace MarketplaceWebService.Samples
             request.ContentMD5 = MarketplaceWebServiceClient.CalculateContentMD5(request.FeedContent);
             request.FeedContent.Position = 0;
 
-            request.FeedType = "_POST_PRODUCT_PRICING_DATA_";
+            request.FeedType = feedType;
 
             SubmitFeedSample.InvokeSubmitFeed(service, request);
             request.FeedContent.Close();
@@ -359,11 +393,11 @@ namespace MarketplaceWebService.Samples
              * Uncomment to invoke Submit Feed Action
              ***********************************************************************/
             {
-                SubmitFeedRequest request = new SubmitFeedRequest();
-                request.Merchant = merchantId;
+                //SubmitFeedRequest request = new SubmitFeedRequest();
+                //request.Merchant = merchantId;
                 // request.MWSAuthToken = iniReader.ReadValue(awsSection, "MWSAuthToken"); // Optional
-                request.MarketplaceIdList = new IdList();
-                request.MarketplaceIdList.Id = new List<string>(new string[] { marketplaceId });
+                //request.MarketplaceIdList = new IdList();
+                //request.MarketplaceIdList.Id = new List<string>(new string[] { marketplaceId });
 
                 // MWS exclusively offers a streaming interface for uploading your feeds. This is because 
                 // feed sizes can grow to the 1GB+ range - and as your business grows you could otherwise 
@@ -372,14 +406,14 @@ namespace MarketplaceWebService.Samples
                 // you made no changes. For the same reason, we strongly encourage you to generate your feeds to 
                 // local disk then upload them directly from disk to MWS.
 
-                request.FeedContent = File.Open("feed.xml", FileMode.Open, FileAccess.Read);
+                //request.FeedContent = File.Open("feed.xml", FileMode.Open, FileAccess.Read);
 
                 // Calculating the MD5 hash value exhausts the stream, and therefore we must either reset the
                 // position, or create another stream for the calculation.
-                request.ContentMD5 = MarketplaceWebServiceClient.CalculateContentMD5(request.FeedContent);
-                request.FeedContent.Position = 0;
+                //request.ContentMD5 = MarketplaceWebServiceClient.CalculateContentMD5(request.FeedContent);
+                //request.FeedContent.Position = 0;
 
-                request.FeedType = "_POST_PRODUCT_PRICING_DATA_";
+                //request.FeedType = "_POST_PRODUCT_PRICING_DATA_";
 
                 //SubmitFeedSample.InvokeSubmitFeed(service, request);
             }
@@ -481,10 +515,11 @@ namespace MarketplaceWebService.Samples
                 // program to MWS in a streaming fashion. Otherwise, as your business grows you may silently reach
                 // the in-memory size limit and have to re-work your solution.
                 // NOTE: Due to Content-MD5 validation, the stream must be read/write.
-                request.FeedSubmissionId = "50047016683";
-                request.FeedSubmissionResult = File.Open("feedSubmissionResult5.xml", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                request.FeedSubmissionId = "51635016699";
+                request.FeedSubmissionResult = File.Open("feedSubmissionResult1.xml", FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
                 GetFeedSubmissionResultSample.InvokeGetFeedSubmissionResult(service, request);
+                request.FeedSubmissionResult.Close();
             }
 
             /************************************************************************

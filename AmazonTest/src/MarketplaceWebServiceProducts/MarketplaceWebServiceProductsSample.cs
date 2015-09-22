@@ -92,6 +92,7 @@ namespace MarketplaceWebServiceProducts {
                             if (target != null)
                             {
                                 string lowest_price = target.InnerText;
+
                                 skuDict[xn.Attributes["SellerSKU"].Value].Add("lowest_price", float.Parse(lowest_price));
                             }
                         }

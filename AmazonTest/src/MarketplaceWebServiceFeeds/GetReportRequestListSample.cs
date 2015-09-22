@@ -39,7 +39,7 @@ namespace MarketplaceWebService.Samples
         /// </summary>
         /// <param name="service">Instance of MarketplaceWebService service</param>
         /// <param name="request">GetFeedSubmissionCountRequest request</param>
-        public static void InvokeGetReportRequestList(MarketplaceWebService service, GetReportRequestListRequest request)
+        public static bool InvokeGetReportRequestList(MarketplaceWebService service, GetReportRequestListRequest request, Dictionary<string, string> requestInfo)
         {
             try 
             {
@@ -64,6 +64,7 @@ namespace MarketplaceWebService.Samples
 
                         if (reportRequestInfo.IsSetReportProcessingStatus())
                         {
+                            requestInfo["ReportProcessingStatus"] = reportRequestInfo.ReportProcessingStatus;
                             Console.WriteLine("               ReportProcessingStatus");
                             Console.WriteLine("                                  {0}", reportRequestInfo.ReportProcessingStatus);
                         }
@@ -74,6 +75,7 @@ namespace MarketplaceWebService.Samples
                         }
                         if (reportRequestInfo.IsSetGeneratedReportId())
                         {
+                            requestInfo["GeneratedReportId"] = reportRequestInfo.GeneratedReportId;
                             Console.WriteLine("                      GeneratedReportId");
                             Console.WriteLine("                                  {0}", reportRequestInfo.GeneratedReportId);
                         }
@@ -117,6 +119,7 @@ namespace MarketplaceWebService.Samples
                 Console.WriteLine("                    " + response.ResponseHeaderMetadata.ResponseContext);
                 Console.WriteLine("                Timestamp");
                 Console.WriteLine("                    " + response.ResponseHeaderMetadata.Timestamp);
+                return true;
 
             } 
             catch (MarketplaceWebServiceException ex) 
@@ -128,6 +131,7 @@ namespace MarketplaceWebService.Samples
                 Console.WriteLine("Request ID: " + ex.RequestId);
                 Console.WriteLine("XML: " + ex.XML);
                 Console.WriteLine("ResponseHeaderMetadata: " + ex.ResponseHeaderMetadata);
+                return false;
             }
         }
                                                 }

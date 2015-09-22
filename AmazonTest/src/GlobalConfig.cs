@@ -23,6 +23,15 @@ namespace AmazonTest.src
         private string saleStartDate;
         private string saleEndDate;
         private string timeFormat;
+        private string inventoryReportType;
+        private string unshippedOrderReportType;
+        private string historyOrderReportType;
+        private string eubBuzType;
+        private string adaptPriceFeedType;
+        private string confirmOrderFeedType;
+        private string shipCarrierCode;
+        private string shipCarrierName;
+        private string shipDateFormat;
 
         private GlobalConfig() {           
             IniReader iniReader = new IniReader(System.Environment.CurrentDirectory + "\\config.ini");
@@ -40,6 +49,15 @@ namespace AmazonTest.src
             saleStartDate = iniReader.ReadValue(awsSection, "saleStartDate");
             saleEndDate = iniReader.ReadValue(awsSection, "saleEndDate");
             timeFormat = iniReader.ReadValue(awsSection, "timeFormat");
+            inventoryReportType = iniReader.ReadValue(awsSection, "inventoryReportType");
+            unshippedOrderReportType = iniReader.ReadValue(awsSection, "unshippedOrderReportType");
+            historyOrderReportType = iniReader.ReadValue(awsSection, "historyOrderReportType");
+            eubBuzType = iniReader.ReadValue(awsSection, "eubBuzType");
+            adaptPriceFeedType = iniReader.ReadValue(awsSection, "adaptPriceFeedType");
+            confirmOrderFeedType = iniReader.ReadValue(awsSection, "confirmOrderFeedType");
+            shipCarrierCode = iniReader.ReadValue(awsSection, "shipCarrierCode");
+            shipCarrierName = iniReader.ReadValue(awsSection, "shipCarrierName");
+            shipDateFormat = iniReader.ReadValue(awsSection, "shipDateFormat");
         }
 
         public string AccessKey{ get{return accessKey;} }
@@ -55,6 +73,15 @@ namespace AmazonTest.src
         public string SaleStartDate { get { return saleStartDate; } }
         public string SaleEndDate { get { return saleEndDate; } }
         public string TimeFormat { get { return timeFormat; } }
+        public string InventoryReportType { get { return inventoryReportType; } }
+        public string UnshippedOrderReportType { get { return unshippedOrderReportType; } }
+        public string HistoryOrderReportType { get { return historyOrderReportType; } }
+        public string EubBuzType { get { return eubBuzType; } }
+        public string AdaptPriceFeedType { get { return adaptPriceFeedType; } }
+        public string ConfirmOrderFeedType { get { return confirmOrderFeedType; } }
+        public string ShipCarrierCode { get { return shipCarrierCode; } }
+        public string ShipCarrierName { get { return shipCarrierName; } }
+        public string ShipDateFormat { get { return shipDateFormat; } }
 
         public static GlobalConfig Instance
         {

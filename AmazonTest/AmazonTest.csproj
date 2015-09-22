@@ -70,6 +70,7 @@
     <Compile Include="runtime-src\MwsXmlBuilder.cs" />
     <Compile Include="runtime-src\MwsXmlReader.cs" />
     <Compile Include="runtime-src\MwsXmlWriter.cs" />
+    <Compile Include="src\SendEmail.cs" />
     <Compile Include="src\AdaptPrice.cs" />
     <Compile Include="src\DBConnectionMysql.cs" />
     <Compile Include="src\GlobalConfig.cs" />
@@ -329,7 +330,35 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="src\MarketplaceWebServiceFeeds\Mock\CancelFeedSubmissionsResponse.xml" />
     <Content Include="src\MarketplaceWebServiceFeeds\Mock\CancelReportRequestsResponse.xml" />
@@ -356,7 +385,9 @@
     <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.GetServiceStatusResponse.xml" />
     <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.ListOrderItemsByNextTokenResponse.xml" />
     <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.ListOrderItemsResponse.xml" />
-    <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.ListOrdersByNextTokenResponse.xml" />
+    <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.ListOrdersByNextTokenResponse.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="src\MarketplaceWebServiceOrders\Mock\MarketplaceWebServiceOrders.Model.ListOrdersResponse.xml" />
     <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetCompetitivePricingForASINResponse.xml" />
     <Content Include="src\MarketplaceWebServiceProducts\Mock\MarketplaceWebServiceProducts.Model.GetCompetitivePricingForSKUResponse.xml" />
