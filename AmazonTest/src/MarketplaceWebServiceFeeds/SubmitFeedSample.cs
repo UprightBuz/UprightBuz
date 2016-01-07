@@ -43,7 +43,7 @@ namespace MarketplaceWebService.Samples
         /// </summary>
         /// <param name="service">Instance of MarketplaceWebService service</param>
         /// <param name="request">SubmitFeedRequest request</param>
-        public static void InvokeSubmitFeed(MarketplaceWebService service, SubmitFeedRequest request)
+        public static string InvokeSubmitFeed(MarketplaceWebService service, SubmitFeedRequest request)
         {
             try 
             {
@@ -66,6 +66,7 @@ namespace MarketplaceWebService.Samples
                         if (feedSubmissionInfo.IsSetFeedSubmissionId()) 
                         {
                             Console.WriteLine("                    FeedSubmissionId");
+                            return feedSubmissionInfo.FeedSubmissionId;
                             Console.WriteLine("                        {0}", feedSubmissionInfo.FeedSubmissionId);
                         }
                         if (feedSubmissionInfo.IsSetFeedType()) 
@@ -125,6 +126,7 @@ namespace MarketplaceWebService.Samples
                 Console.WriteLine("XML: " + ex.XML);
                 Console.WriteLine("ResponseHeaderMetadata: " + ex.ResponseHeaderMetadata);
             }
+            return "";
         }
                                                                     }
 }

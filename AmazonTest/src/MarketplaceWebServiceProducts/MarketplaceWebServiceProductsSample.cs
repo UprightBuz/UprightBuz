@@ -37,17 +37,96 @@ namespace MarketplaceWebServiceProducts {
     /// </summary>
     public class MarketplaceWebServiceProductsSample {
 
-        public static void GetSkuPrice(Dictionary<string, Dictionary<string, float>> skuDict)
+        // 监测跟卖
+        public static void GetNumberOfOfferListings(string market_id, Dictionary<string, int> skuDict)
+        {
+            // Create a configuration object
+            MarketplaceWebServiceProductsConfig config = new MarketplaceWebServiceProductsConfig();
+            config.ServiceURL = GlobalConfig.Instance.GetConfigValue(market_id, "serviceURL");
+            // Set other client connection configurations here if needed
+            // Create the client itself
+            //MarketplaceWebServiceProducts client = new MarketplaceWebServiceProductsClient(GlobalConfig.Instance.AppName, GlobalConfig.Instance.AppVersion, GlobalConfig.Instance.AccessKey, GlobalConfig.Instance.SecretKey, config);
+            MarketplaceWebServiceProducts client = new MarketplaceWebServiceProductsClient(GlobalConfig.Instance.GetCommonConfigValue("appName"), GlobalConfig.Instance.GetCommonConfigValue("appVersion"),
+                GlobalConfig.Instance.GetConfigValue(market_id, "accessKey"), GlobalConfig.Instance.GetConfigValue(market_id, "secretKey"), config);
+            //MarketplaceWebServiceProductsSample sample = new MarketplaceWebServiceProductsSample(client, GlobalConfig.Instance.SellerId, "", GlobalConfig.Instance.MarketplaceId);
+            MarketplaceWebServiceProductsSample sample = new MarketplaceWebServiceProductsSample(client, GlobalConfig.Instance.GetConfigValue(market_id, "sellerId"), "", GlobalConfig.Instance.GetConfigValue(market_id, "marketplaceId"));
+
+
+            // Uncomment the operation you'd like to test here
+            // TODO: Modify the request created in the Invoke method to be valid
+
+            try
+            {
+                //*** todo: 这里需要对list做切片，每组20个
+                List<string> skuList = new List<string>(skuDict.Keys);
+                IMWSResponse response = null;
+                int count = int.Parse(GlobalConfig.Instance.GetCommonConfigValue("skuPriceCount"));
+                int current_index;
+                for (current_index = 0; current_index < skuList.Count; current_index += count)
+                {
+                    int current_count = (current_index + count) > skuList.Count ? skuList.Count - current_index : count;
+                    List<string> skuRangeList = skuList.GetRange(current_index, current_count);
+                    
+
+                    
+                    {
+                        response = sample.InvokeGetCompetitivePricingForSKU(skuRangeList);
+                        XmlDocument xmlDocument = new XmlDocument();
+                        xmlDocument.LoadXml(response.ToXML());
+                        XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDocument.NameTable);
+                        nsmgr.AddNamespace("mws", xmlDocument.GetElementsByTagName("GetCompetitivePricingForSKUResponse")[0].Attributes["xmlns"].Value);
+                        XmlNodeList xnList = xmlDocument.SelectNodes("//mws:GetCompetitivePricingForSKUResult", nsmgr);
+                        foreach (XmlNode xn in xnList)
+                        {
+                            //XmlNode target = xn.SelectSingleNode(".//mws:NumberOfOfferListings/mws:OfferListingCount", nsmgr);
+                            XmlNodeList xnListTarget = xn.SelectNodes(".//mws:NumberOfOfferListings/mws:OfferListingCount", nsmgr);
+                            foreach (XmlNode xnTarget in xnListTarget)
+                            {
+                                if (xnTarget.Attributes["condition"].Value == "New")
+                                {
+                                    skuDict[xn.Attributes["SellerSKU"].Value] = int.Parse(xnTarget.InnerText);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+
+                    // Restore rate: 10 items every second
+                    System.Threading.Thread.Sleep(int.Parse(GlobalConfig.Instance.GetCommonConfigValue("skuPriceWaitTime")));
+                }
+            }
+            catch (MarketplaceWebServiceProductsException ex)
+            {
+                // Exception properties are important for diagnostics.
+                ResponseHeaderMetadata rhmd = ex.ResponseHeaderMetadata;
+                Console.WriteLine("Service Exception:");
+                if (rhmd != null)
+                {
+                    Console.WriteLine("RequestId: " + rhmd.RequestId);
+                    Console.WriteLine("Timestamp: " + rhmd.Timestamp);
+                }
+                Console.WriteLine("Message: " + ex.Message);
+                Console.WriteLine("StatusCode: " + ex.StatusCode);
+                Console.WriteLine("ErrorCode: " + ex.ErrorCode);
+                Console.WriteLine("ErrorType: " + ex.ErrorType);
+                throw ex;
+            }
+        }
+
+        public static void GetSkuPrice(string market_id, Dictionary<string, Dictionary<string, float>> skuDict)
         { 
             // Create a configuration object
             MarketplaceWebServiceProductsConfig config = new MarketplaceWebServiceProductsConfig();
-            config.ServiceURL = GlobalConfig.Instance.ServiceURL;
+            config.ServiceURL = GlobalConfig.Instance.GetConfigValue(market_id, "serviceURL");
             // Set other client connection configurations here if needed
             // Create the client itself
-            MarketplaceWebServiceProducts client = new MarketplaceWebServiceProductsClient(GlobalConfig.Instance.AppName, GlobalConfig.Instance.AppVersion, GlobalConfig.Instance.AccessKey, GlobalConfig.Instance.SecretKey, config);
+            //MarketplaceWebServiceProducts client = new MarketplaceWebServiceProductsClient(GlobalConfig.Instance.AppName, GlobalConfig.Instance.AppVersion, GlobalConfig.Instance.AccessKey, GlobalConfig.Instance.SecretKey, config);
+            MarketplaceWebServiceProducts client = new MarketplaceWebServiceProductsClient(GlobalConfig.Instance.GetCommonConfigValue("appName"), GlobalConfig.Instance.GetCommonConfigValue("appVersion"), 
+                GlobalConfig.Instance.GetConfigValue(market_id, "accessKey"), GlobalConfig.Instance.GetConfigValue(market_id, "secretKey"), config);
+            //MarketplaceWebServiceProductsSample sample = new MarketplaceWebServiceProductsSample(client, GlobalConfig.Instance.SellerId, "", GlobalConfig.Instance.MarketplaceId);
+            MarketplaceWebServiceProductsSample sample = new MarketplaceWebServiceProductsSample(client, GlobalConfig.Instance.GetConfigValue(market_id, "sellerId"), "", GlobalConfig.Instance.GetConfigValue(market_id, "marketplaceId"));
 
-            MarketplaceWebServiceProductsSample sample = new MarketplaceWebServiceProductsSample(client, GlobalConfig.Instance.SellerId, "", GlobalConfig.Instance.MarketplaceId);
-                
 
             // Uncomment the operation you'd like to test here
             // TODO: Modify the request created in the Invoke method to be valid
@@ -57,7 +136,7 @@ namespace MarketplaceWebServiceProducts {
                 //*** todo: 这里需要对list做切片，每组20个
                 List<string> skuList = new List<string>(skuDict.Keys);
                 IMWSResponse response = null;
-                int count = GlobalConfig.Instance.SkuPriceCount;
+                int count = int.Parse(GlobalConfig.Instance.GetCommonConfigValue("skuPriceCount"));
                 int current_index;
                 for (current_index = 0; current_index < skuList.Count; current_index += count){
                     int current_count = (current_index + count)  > skuList.Count ? skuList.Count - current_index : count;
@@ -118,7 +197,7 @@ namespace MarketplaceWebServiceProducts {
                     }
 
                     // Restore rate: 10 items every second
-                    System.Threading.Thread.Sleep(GlobalConfig.Instance.SkuPriceWaitTime);
+                    System.Threading.Thread.Sleep(int.Parse(GlobalConfig.Instance.GetCommonConfigValue("skuPriceWaitTime")));
                 }
  
 

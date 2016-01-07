@@ -37,7 +37,7 @@ namespace MarketplaceWebService.Samples
         * Samples for Marketplace Web Service functionality
         */
 
-        public static void GetReport(string reportType, string fileName)
+        public static void GetReport(string market_id, string reportType, string fileName, DateTime startDate, DateTime endDate)
         {
             /************************************************************************
             * Instantiate  Implementation of Marketplace Web Service 
@@ -50,28 +50,38 @@ namespace MarketplaceWebService.Samples
              * HTTP User-Agent field. These are required fields.
              ***********************************************************************/
 
-            
+
 
             /************************************************************************
              * All MWS requests must contain the seller's merchant ID and 
              * marketplace ID.
              ***********************************************************************/
- 
-            config.ServiceURL = GlobalConfig.Instance.ServiceURL;
 
-            config.SetUserAgentHeader(GlobalConfig.Instance.AppName, GlobalConfig.Instance.AppVersion, "C#");
-            MarketplaceWebService service = new MarketplaceWebServiceClient(GlobalConfig.Instance.AccessKey, GlobalConfig.Instance.SecretKey, config);
+            //config.ServiceURL = GlobalConfig.Instance.ServiceURL;
+            config.ServiceURL = GlobalConfig.Instance.GetConfigValue(market_id, "serviceURL");
+
+            //config.SetUserAgentHeader(GlobalConfig.Instance.AppName, GlobalConfig.Instance.AppVersion, "C#");
+            //MarketplaceWebService service = new MarketplaceWebServiceClient(GlobalConfig.Instance.AccessKey, GlobalConfig.Instance.SecretKey, config);
+            config.SetUserAgentHeader(GlobalConfig.Instance.GetCommonConfigValue("appName"), GlobalConfig.Instance.GetCommonConfigValue("appVersion"), "C#");
+            MarketplaceWebService service = new MarketplaceWebServiceClient(GlobalConfig.Instance.GetConfigValue(market_id, "accessKey"), GlobalConfig.Instance.GetConfigValue(market_id, "secretKey"), config);
 
             //*** 1. Submit a report request using the RequestReport operation. This is a request to Amazon MWS to generate a specific report.            
             RequestReportRequest reportRequest = new RequestReportRequest();
-            reportRequest.Merchant = GlobalConfig.Instance.SellerId;
+            //reportRequest.Merchant = GlobalConfig.Instance.SellerId;
+            reportRequest.Merchant = GlobalConfig.Instance.GetConfigValue(market_id, "sellerId");
             // request.MWSAuthToken = "<Your MWS Auth Token>"; // Optional
             reportRequest.MarketplaceIdList = new IdList();
-            reportRequest.MarketplaceIdList.Id = new List<string>( new string [] { GlobalConfig.Instance.MarketplaceId } );
+            //reportRequest.MarketplaceIdList.Id = new List<string>( new string [] { GlobalConfig.Instance.MarketplaceId } );
+            reportRequest.MarketplaceIdList.Id = new List<string>(new string[] { GlobalConfig.Instance.GetConfigValue(market_id, "marketplaceId") });
 
             reportRequest.ReportType = reportType;
-            reportRequest.StartDate = new DateTime(2015, 8, 1);
-            reportRequest.EndDate = new DateTime(2015, 9, 21);
+
+            if (startDate != null)
+            {
+                reportRequest.StartDate = startDate;
+                reportRequest.EndDate = endDate;
+            }
+            
             // @TODO: set additional request parameters here
             // request.ReportOptions = "ShowSalesChannel=true"; 
             string reportRequestId = RequestReportSample.InvokeRequestReport(service, reportRequest);
@@ -85,7 +95,7 @@ namespace MarketplaceWebService.Samples
              ***********************************************************************/
             {
                 GetReportRequestListRequest request = new GetReportRequestListRequest();
-                request.Merchant = GlobalConfig.Instance.SellerId;
+                request.Merchant = reportRequest.Merchant;
                 //request.MWSAuthToken = "<Your MWS Auth Token>"; // Optional
                 // @TODO: set additional request parameters here
                 request.ReportRequestIdList = new IdList();
@@ -95,6 +105,9 @@ namespace MarketplaceWebService.Samples
                     if(!GetReportRequestListSample.InvokeGetReportRequestList(service, request, requestInfo))
                     {
                         // todo “Ï≥£¥¶¿Ì
+                        requestInfo["ReportProcessingStatus"] = "_DONE_";
+                        requestInfo["GeneratedReportId"] = "";
+                        break;
                     }
                     //*** Request every 60s 
                     System.Threading.Thread.Sleep(1 * 60 * 1000);
@@ -108,7 +121,7 @@ namespace MarketplaceWebService.Samples
                 {
                     
                     GetReportListRequest getReportListRequest = new GetReportListRequest();
-                    getReportListRequest.Merchant = GlobalConfig.Instance.SellerId;
+                    getReportListRequest.Merchant = reportRequest.Merchant;
                     //request.MWSAuthToken = "<Your MWS Auth Token>"; // Optional
                     getReportListRequest.ReportRequestIdList = new IdList();
                     getReportListRequest.ReportRequestIdList.Id = new List<string>(new string[] { reportRequestId });
@@ -128,7 +141,7 @@ namespace MarketplaceWebService.Samples
             //*** You include in the request the GeneratedReportId or the ReportId for the report you want to receive. 
             //*** You then process the Content-MD5 header to confirm that the report was not corrupted during transmission.
             GetReportRequest getReportRequest = new GetReportRequest();
-            getReportRequest.Merchant = GlobalConfig.Instance.SellerId;
+            getReportRequest.Merchant = reportRequest.Merchant;
             // request.MWSAuthToken = "<Your MWS Auth Token>"; // Optional
 
             // Note that depending on the type of report being downloaded, a report can reach 
@@ -145,7 +158,7 @@ namespace MarketplaceWebService.Samples
             }
         }
 
-        public static void SubmitFeed(string fileName, string feedType)
+        public static string SubmitFeed(string market_id, string fileName, string feedType)
         {
             //IniReader iniReader = new IniReader(System.Environment.CurrentDirectory + "\\config.ini");
             //string awsSection = "AWS_US";
@@ -175,17 +188,21 @@ namespace MarketplaceWebService.Samples
             //string marketplaceId = iniReader.ReadValue(awsSection, "marketplaceId");
 
             // United States:
-            config.ServiceURL = GlobalConfig.Instance.ServiceURL;
+            //config.ServiceURL = GlobalConfig.Instance.ServiceURL;
 
-            config.SetUserAgentHeader(GlobalConfig.Instance.AppName, GlobalConfig.Instance.AppVersion, "C#");
-                
-            MarketplaceWebService service = new MarketplaceWebServiceClient(GlobalConfig.Instance.AccessKey, GlobalConfig.Instance.SecretKey, config);
+            //config.SetUserAgentHeader(GlobalConfig.Instance.AppName, GlobalConfig.Instance.AppVersion, "C#");
+            config.ServiceURL = GlobalConfig.Instance.GetConfigValue(market_id, "serviceURL");
+
+            config.SetUserAgentHeader(GlobalConfig.Instance.GetCommonConfigValue("appName"), GlobalConfig.Instance.GetCommonConfigValue("appVersion"), "C#");
+
+            //MarketplaceWebService service = new MarketplaceWebServiceClient(GlobalConfig.Instance.AccessKey, GlobalConfig.Instance.SecretKey, config);
+            MarketplaceWebService service = new MarketplaceWebServiceClient(GlobalConfig.Instance.GetConfigValue(market_id, "accessKey"), GlobalConfig.Instance.GetConfigValue(market_id, "secretKey"), config);
 
             SubmitFeedRequest request = new SubmitFeedRequest();
-            request.Merchant = GlobalConfig.Instance.SellerId;
+            request.Merchant = GlobalConfig.Instance.GetConfigValue(market_id, "sellerId");
             // request.MWSAuthToken = iniReader.ReadValue(awsSection, "MWSAuthToken"); // Optional
             request.MarketplaceIdList = new IdList();
-            request.MarketplaceIdList.Id = new List<string>(new string[] { GlobalConfig.Instance.MarketplaceId });
+            request.MarketplaceIdList.Id = new List<string>(new string[] { GlobalConfig.Instance.GetConfigValue(market_id, "marketplaceId") });
 
             // MWS exclusively offers a streaming interface for uploading your feeds. This is because 
             // feed sizes can grow to the 1GB+ range - and as your business grows you could otherwise 
@@ -203,8 +220,91 @@ namespace MarketplaceWebService.Samples
 
             request.FeedType = feedType;
 
-            SubmitFeedSample.InvokeSubmitFeed(service, request);
+            string feedSubmissionId = SubmitFeedSample.InvokeSubmitFeed(service, request);
             request.FeedContent.Close();
+            return feedSubmissionId;
+        }
+
+
+        public static void GetFeedSubmissionResult(string market_id, string feedSubmissionId, string fileName)
+        {
+            //IniReader iniReader = new IniReader(System.Environment.CurrentDirectory + "\\config.ini");
+            //string awsSection = "AWS_US";
+
+            String accessKeyId = GlobalConfig.Instance.GetConfigValue(market_id, "accessKey");
+            String secretAccessKey = GlobalConfig.Instance.GetConfigValue(market_id, "secretKey");
+
+            /************************************************************************
+            * Instantiate  Implementation of Marketplace Web Service 
+            ***********************************************************************/
+
+            MarketplaceWebServiceConfig config = new MarketplaceWebServiceConfig();
+
+            /************************************************************************
+             * The application name and version are included in each MWS call's
+             * HTTP User-Agent field. These are required fields.
+             ***********************************************************************/
+
+            string applicationName = GlobalConfig.Instance.GetCommonConfigValue("appName");
+            string applicationVersion = GlobalConfig.Instance.GetCommonConfigValue("appVersion");
+
+            /************************************************************************
+             * All MWS requests must contain the seller's merchant ID and 
+             * marketplace ID.
+             ***********************************************************************/
+            string merchantId = GlobalConfig.Instance.GetConfigValue(market_id, "sellerId");
+            string marketplaceId = GlobalConfig.Instance.GetConfigValue(market_id, "marketplaceId");
+
+            // United States:
+            config.ServiceURL = GlobalConfig.Instance.GetConfigValue(market_id, "serviceURL");
+            //
+            // United Kingdom:
+            // config.ServiceURL = "https://mws.amazonservices.co.uk";
+            //
+            // Germany:
+            // config.ServiceURL = "https://mws.amazonservices.de";
+            //
+            // France:
+            // config.ServiceURL = "https://mws.amazonservices.fr";
+            //
+            // Japan:
+            // config.ServiceURL = "https://mws.amazonservices.jp";
+            //
+            // China:
+            // config.ServiceURL = "https://mws.amazonservices.com.cn";
+            //
+            // Canada:
+            // config.ServiceURL = "https://mws.amazonservices.ca";
+            //
+            // Italy:
+            // config.ServiceURL = "https://mws.amazonservices.it";
+            //
+            config.SetUserAgentHeader(
+                applicationName,
+                applicationVersion,
+                "C#"
+                );
+            MarketplaceWebService service = new MarketplaceWebServiceClient(accessKeyId, secretAccessKey, config);
+
+            /************************************************************************
+             * Uncomment to invoke Get Feed Submission Result Action
+             ***********************************************************************/
+            {
+                GetFeedSubmissionResultRequest request = new GetFeedSubmissionResultRequest();
+                request.Merchant = merchantId;
+                //request.MWSAuthToken = "<Your MWS Auth Token>"; // Optional
+
+                // Note that depending on the size of the feed sent in, and the number of errors and warnings,
+                // the result can reach sizes greater than 1GB. For this reason we recommend that you _always_ 
+                // program to MWS in a streaming fashion. Otherwise, as your business grows you may silently reach
+                // the in-memory size limit and have to re-work your solution.
+                // NOTE: Due to Content-MD5 validation, the stream must be read/write.
+                request.FeedSubmissionId = feedSubmissionId;
+                request.FeedSubmissionResult = File.Open(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+
+                GetFeedSubmissionResultSample.InvokeGetFeedSubmissionResult(service, request);
+                request.FeedSubmissionResult.Close();
+            }
         }
 
         public static void RunSample()
@@ -514,9 +614,9 @@ namespace MarketplaceWebService.Samples
                 // the result can reach sizes greater than 1GB. For this reason we recommend that you _always_ 
                 // program to MWS in a streaming fashion. Otherwise, as your business grows you may silently reach
                 // the in-memory size limit and have to re-work your solution.
-                // NOTE: Due to Content-MD5 validation, the stream must be read/write.
-                request.FeedSubmissionId = "51635016699";
-                request.FeedSubmissionResult = File.Open("feedSubmissionResult1.xml", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                // NOTE: Due to Content-MD5 validation, the stream must be read/write.aprtwin
+                request.FeedSubmissionId = "57612016782";
+                request.FeedSubmissionResult = File.Open("feedSubmissionResult12.xml", FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
                 GetFeedSubmissionResultSample.InvokeGetFeedSubmissionResult(service, request);
                 request.FeedSubmissionResult.Close();
@@ -609,7 +709,7 @@ namespace MarketplaceWebService.Samples
             Console.WriteLine("End of output. You can close this window");
             Console.WriteLine("===========================================");
 
-            System.Threading.Thread.Sleep(50000);
+            // System.Threading.Thread.Sleep(50000);
         }
 
     }

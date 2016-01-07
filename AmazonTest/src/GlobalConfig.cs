@@ -32,10 +32,14 @@ namespace AmazonTest.src
         private string shipCarrierCode;
         private string shipCarrierName;
         private string shipDateFormat;
+        private string unshippedFBAOrderReportType;
+        private string updateProductFeedType;
+        private string createRelationshipFeedType;
+        private IniReader iniReader;
 
         private GlobalConfig() {           
-            IniReader iniReader = new IniReader(System.Environment.CurrentDirectory + "\\config.ini");
-            string awsSection = "AWS_US";
+            iniReader = new IniReader(System.Environment.CurrentDirectory + "\\config.ini");
+            /*string awsSection = "AWS_US";
             accessKey = iniReader.ReadValue(awsSection, "accessKey");
             secretKey = iniReader.ReadValue(awsSection, "secretKey");
             appName = iniReader.ReadValue(awsSection, "appName");
@@ -58,9 +62,12 @@ namespace AmazonTest.src
             shipCarrierCode = iniReader.ReadValue(awsSection, "shipCarrierCode");
             shipCarrierName = iniReader.ReadValue(awsSection, "shipCarrierName");
             shipDateFormat = iniReader.ReadValue(awsSection, "shipDateFormat");
+            unshippedFBAOrderReportType = iniReader.ReadValue(awsSection, "unshippedFBAOrderReportType");
+            updateProductFeedType = iniReader.ReadValue(awsSection, "updateProductFeedType");
+            createRelationshipFeedType = iniReader.ReadValue(awsSection, "createRelationshipFeedType");*/
         }
 
-        public string AccessKey{ get{return accessKey;} }
+        /*public string AccessKey{ get{return accessKey;} }
         public string SecretKey { get { return secretKey; } }
         public string AppVersion { get { return appVersion; } }
         public string AppName { get { return appName; } }
@@ -82,6 +89,29 @@ namespace AmazonTest.src
         public string ShipCarrierCode { get { return shipCarrierCode; } }
         public string ShipCarrierName { get { return shipCarrierName; } }
         public string ShipDateFormat { get { return shipDateFormat; } }
+        public string UnshippedFBAOrderReportType { get { return unshippedFBAOrderReportType; } }
+        public string UpdateProductFeedType { get { return updateProductFeedType; } }
+        public string CreateRelationshipFeedType { get { return createRelationshipFeedType; } }
+        */
+        public string MarketID_US { get { return "US"; } }   // 美
+        public string MarketID_CA { get { return "CA"; } }   // 加
+        public string MarketID_UK { get { return "UK"; } }   // 英
+        public string MarketID_DE { get { return "DE"; } }   // 德
+        public string MarketID_FR { get { return "FR"; } }   // 法
+        public string MarketID_ES { get { return "ES"; } }   // 西
+        public string MarketID_IT { get { return "IT"; } }   // 意
+
+        // 获取各个站点的配置项
+        public string GetConfigValue(string section, string key)
+        {
+            return iniReader.ReadValue(section, key);
+        }
+
+        // 获取通用配置项
+        public string GetCommonConfigValue(string key)
+        {
+            return GetConfigValue("COMMON", key);
+        }
 
         public static GlobalConfig Instance
         {

@@ -70,6 +70,7 @@
     <Compile Include="runtime-src\MwsXmlBuilder.cs" />
     <Compile Include="runtime-src\MwsXmlReader.cs" />
     <Compile Include="runtime-src\MwsXmlWriter.cs" />
+    <Compile Include="src\EUB.cs" />
     <Compile Include="src\SendEmail.cs" />
     <Compile Include="src\AdaptPrice.cs" />
     <Compile Include="src\DBConnectionMysql.cs" />
