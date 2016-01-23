@@ -36,7 +36,6 @@
             this.btn_ship_order = new System.Windows.Forms.Button();
             this.btn_export_eub_excel = new System.Windows.Forms.Button();
             this.btn_tag_observed = new System.Windows.Forms.Button();
-            this.btn_get_order_report = new System.Windows.Forms.Button();
             this.dgv_unshipped_order = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button8 = new System.Windows.Forms.Button();
@@ -90,7 +89,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tb_feedMissionId = new System.Windows.Forms.TextBox();
             this.button10 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.btn_show_order_detail = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -104,7 +102,6 @@
             this.button24 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.button27 = new System.Windows.Forms.Button();
             this.dgv_observed_order_ca = new System.Windows.Forms.DataGridView();
@@ -128,34 +125,38 @@
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.button31 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tb_variation_bound_filename_ca = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.button32 = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.button39 = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.tb_feedMissionId_ca = new System.Windows.Forms.TextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.button33 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tb_variation_child_filename_ca = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.button34 = new System.Windows.Forms.Button();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.tb_variation_data_ca = new System.Windows.Forms.TextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.button35 = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.tb_variation_parent_filename_ca = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.button36 = new System.Windows.Forms.Button();
             this.button38 = new System.Windows.Forms.Button();
             this.button37 = new System.Windows.Forms.Button();
-            this.button40 = new System.Windows.Forms.Button();
-            this.button41 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button42 = new System.Windows.Forms.Button();
             this.tabPage15 = new System.Windows.Forms.TabPage();
             this.tabPage16 = new System.Windows.Forms.TabPage();
             this.dgv_listing_offer = new System.Windows.Forms.DataGridView();
             this.label_monitor_prompt = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.btn_get_order_report = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button40 = new System.Windows.Forms.Button();
+            this.label_get_order_time = new System.Windows.Forms.Label();
+            this.label_get_order_time_ca = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tp_unshipped_order.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_unshipped_order)).BeginInit();
@@ -218,8 +219,8 @@
             // 
             // tp_unshipped_order
             // 
+            this.tp_unshipped_order.Controls.Add(this.label_get_order_time);
             this.tp_unshipped_order.Controls.Add(this.button1);
-            this.tp_unshipped_order.Controls.Add(this.button40);
             this.tp_unshipped_order.Controls.Add(this.btn_tag_fake_shipped);
             this.tp_unshipped_order.Controls.Add(this.btn_update_track_id);
             this.tp_unshipped_order.Controls.Add(this.btn_ship_order);
@@ -237,17 +238,17 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(941, 17);
+            this.button9.Location = new System.Drawing.Point(819, 21);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(135, 34);
             this.button9.TabIndex = 9;
-            this.button9.Text = "6、生成配货图片集合";
+            this.button9.Text = "生成配货图片集合";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click_1);
             // 
             // btn_tag_fake_shipped
             // 
-            this.btn_tag_fake_shipped.Location = new System.Drawing.Point(942, 24);
+            this.btn_tag_fake_shipped.Location = new System.Drawing.Point(755, 24);
             this.btn_tag_fake_shipped.Name = "btn_tag_fake_shipped";
             this.btn_tag_fake_shipped.Size = new System.Drawing.Size(133, 39);
             this.btn_tag_fake_shipped.TabIndex = 4;
@@ -257,7 +258,7 @@
             // 
             // btn_update_track_id
             // 
-            this.btn_update_track_id.Location = new System.Drawing.Point(752, 24);
+            this.btn_update_track_id.Location = new System.Drawing.Point(565, 24);
             this.btn_update_track_id.Name = "btn_update_track_id";
             this.btn_update_track_id.Size = new System.Drawing.Size(140, 39);
             this.btn_update_track_id.TabIndex = 3;
@@ -267,7 +268,7 @@
             // 
             // btn_ship_order
             // 
-            this.btn_ship_order.Location = new System.Drawing.Point(1120, 24);
+            this.btn_ship_order.Location = new System.Drawing.Point(933, 24);
             this.btn_ship_order.Name = "btn_ship_order";
             this.btn_ship_order.Size = new System.Drawing.Size(166, 39);
             this.btn_ship_order.TabIndex = 2;
@@ -277,7 +278,7 @@
             // 
             // btn_export_eub_excel
             // 
-            this.btn_export_eub_excel.Location = new System.Drawing.Point(589, 24);
+            this.btn_export_eub_excel.Location = new System.Drawing.Point(402, 24);
             this.btn_export_eub_excel.Name = "btn_export_eub_excel";
             this.btn_export_eub_excel.Size = new System.Drawing.Size(129, 39);
             this.btn_export_eub_excel.TabIndex = 1;
@@ -287,7 +288,7 @@
             // 
             // btn_tag_observed
             // 
-            this.btn_tag_observed.Location = new System.Drawing.Point(389, 24);
+            this.btn_tag_observed.Location = new System.Drawing.Point(202, 24);
             this.btn_tag_observed.Name = "btn_tag_observed";
             this.btn_tag_observed.Size = new System.Drawing.Size(164, 39);
             this.btn_tag_observed.TabIndex = 1;
@@ -295,23 +296,13 @@
             this.btn_tag_observed.UseVisualStyleBackColor = true;
             this.btn_tag_observed.Click += new System.EventHandler(this.btn_tag_observed_Click);
             // 
-            // btn_get_order_report
-            // 
-            this.btn_get_order_report.Location = new System.Drawing.Point(33, 24);
-            this.btn_get_order_report.Name = "btn_get_order_report";
-            this.btn_get_order_report.Size = new System.Drawing.Size(129, 39);
-            this.btn_get_order_report.TabIndex = 1;
-            this.btn_get_order_report.Text = "1、拉取订单";
-            this.btn_get_order_report.UseVisualStyleBackColor = true;
-            this.btn_get_order_report.Click += new System.EventHandler(this.btn_get_order_report_Click);
-            // 
             // dgv_unshipped_order
             // 
             this.dgv_unshipped_order.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_unshipped_order.Location = new System.Drawing.Point(33, 79);
+            this.dgv_unshipped_order.Location = new System.Drawing.Point(33, 107);
             this.dgv_unshipped_order.Name = "dgv_unshipped_order";
             this.dgv_unshipped_order.RowTemplate.Height = 23;
-            this.dgv_unshipped_order.Size = new System.Drawing.Size(1572, 532);
+            this.dgv_unshipped_order.Size = new System.Drawing.Size(1572, 504);
             this.dgv_unshipped_order.TabIndex = 0;
             this.dgv_unshipped_order.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dgv_unshipped_order_RowPostPaint);
             // 
@@ -829,7 +820,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(734, 17);
+            this.button10.Location = new System.Drawing.Point(612, 21);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(150, 34);
             this.button10.TabIndex = 8;
@@ -837,19 +828,9 @@
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(140, 15);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(135, 38);
-            this.button6.TabIndex = 6;
-            this.button6.Text = "更新库存";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(522, 14);
+            this.button5.Location = new System.Drawing.Point(400, 18);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(150, 38);
             this.button5.TabIndex = 6;
@@ -859,7 +840,7 @@
             // 
             // btn_show_order_detail
             // 
-            this.btn_show_order_detail.Location = new System.Drawing.Point(329, 14);
+            this.btn_show_order_detail.Location = new System.Drawing.Point(207, 18);
             this.btn_show_order_detail.Name = "btn_show_order_detail";
             this.btn_show_order_detail.Size = new System.Drawing.Size(135, 39);
             this.btn_show_order_detail.TabIndex = 5;
@@ -920,8 +901,10 @@
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.label_get_order_time_ca);
+            this.tabPage8.Controls.Add(this.button40);
+            this.tabPage8.Controls.Add(this.button6);
             this.tabPage8.Controls.Add(this.button42);
-            this.tabPage8.Controls.Add(this.button41);
             this.tabPage8.Controls.Add(this.dgv_unshipped_order_ca);
             this.tabPage8.Controls.Add(this.button22);
             this.tabPage8.Controls.Add(this.button23);
@@ -940,16 +923,16 @@
             // dgv_unshipped_order_ca
             // 
             this.dgv_unshipped_order_ca.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_unshipped_order_ca.Location = new System.Drawing.Point(45, 82);
+            this.dgv_unshipped_order_ca.Location = new System.Drawing.Point(45, 106);
             this.dgv_unshipped_order_ca.Name = "dgv_unshipped_order_ca";
             this.dgv_unshipped_order_ca.RowTemplate.Height = 23;
-            this.dgv_unshipped_order_ca.Size = new System.Drawing.Size(1580, 532);
+            this.dgv_unshipped_order_ca.Size = new System.Drawing.Size(1580, 508);
             this.dgv_unshipped_order_ca.TabIndex = 16;
             this.dgv_unshipped_order_ca.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dgv_unshipped_order_ca_RowPostPaint);
             // 
             // button22
             // 
-            this.button22.Location = new System.Drawing.Point(924, 25);
+            this.button22.Location = new System.Drawing.Point(1029, 25);
             this.button22.Name = "button22";
             this.button22.Size = new System.Drawing.Size(133, 39);
             this.button22.TabIndex = 14;
@@ -959,7 +942,7 @@
             // 
             // button23
             // 
-            this.button23.Location = new System.Drawing.Point(740, 25);
+            this.button23.Location = new System.Drawing.Point(845, 25);
             this.button23.Name = "button23";
             this.button23.Size = new System.Drawing.Size(140, 39);
             this.button23.TabIndex = 13;
@@ -969,7 +952,7 @@
             // 
             // button24
             // 
-            this.button24.Location = new System.Drawing.Point(1104, 25);
+            this.button24.Location = new System.Drawing.Point(1209, 25);
             this.button24.Name = "button24";
             this.button24.Size = new System.Drawing.Size(153, 39);
             this.button24.TabIndex = 12;
@@ -979,33 +962,23 @@
             // 
             // button25
             // 
-            this.button25.Location = new System.Drawing.Point(577, 25);
+            this.button25.Location = new System.Drawing.Point(416, 13);
             this.button25.Name = "button25";
-            this.button25.Size = new System.Drawing.Size(129, 39);
+            this.button25.Size = new System.Drawing.Size(158, 24);
             this.button25.TabIndex = 10;
-            this.button25.Text = "4、导出物流excel";
+            this.button25.Text = "导出到E邮宝";
             this.button25.UseVisualStyleBackColor = true;
             this.button25.Click += new System.EventHandler(this.button25_Click);
             // 
             // button26
             // 
-            this.button26.Location = new System.Drawing.Point(379, 25);
+            this.button26.Location = new System.Drawing.Point(219, 25);
             this.button26.Name = "button26";
             this.button26.Size = new System.Drawing.Size(164, 39);
             this.button26.TabIndex = 11;
             this.button26.Text = "3、标记为待观察";
             this.button26.UseVisualStyleBackColor = true;
             this.button26.Click += new System.EventHandler(this.button26_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(45, 25);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(129, 39);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "1. 拉取订单";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // tabPage9
             // 
@@ -1201,7 +1174,7 @@
             this.tabPage14.Controls.Add(this.groupBox5);
             this.tabPage14.Controls.Add(this.groupBox8);
             this.tabPage14.Controls.Add(this.groupBox6);
-            this.tabPage14.Controls.Add(this.textBox4);
+            this.tabPage14.Controls.Add(this.tb_variation_data_ca);
             this.tabPage14.Controls.Add(this.groupBox7);
             this.tabPage14.Controls.Add(this.button38);
             this.tabPage14.Controls.Add(this.button37);
@@ -1226,7 +1199,7 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.button31);
-            this.groupBox5.Controls.Add(this.textBox1);
+            this.groupBox5.Controls.Add(this.tb_variation_bound_filename_ca);
             this.groupBox5.Controls.Add(this.label14);
             this.groupBox5.Controls.Add(this.button32);
             this.groupBox5.Location = new System.Drawing.Point(727, 473);
@@ -1243,14 +1216,15 @@
             this.button31.TabIndex = 16;
             this.button31.Text = "查看文件内容";
             this.button31.UseVisualStyleBackColor = true;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
             // 
-            // textBox1
+            // tb_variation_bound_filename_ca
             // 
-            this.textBox1.Location = new System.Drawing.Point(107, 28);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(384, 21);
-            this.textBox1.TabIndex = 15;
+            this.tb_variation_bound_filename_ca.Location = new System.Drawing.Point(107, 28);
+            this.tb_variation_bound_filename_ca.Name = "tb_variation_bound_filename_ca";
+            this.tb_variation_bound_filename_ca.ReadOnly = true;
+            this.tb_variation_bound_filename_ca.Size = new System.Drawing.Size(384, 21);
+            this.tb_variation_bound_filename_ca.TabIndex = 15;
             // 
             // label14
             // 
@@ -1269,12 +1243,13 @@
             this.button32.TabIndex = 0;
             this.button32.Text = "子类绑定到父类";
             this.button32.UseVisualStyleBackColor = true;
+            this.button32.Click += new System.EventHandler(this.button32_Click);
             // 
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.button39);
             this.groupBox8.Controls.Add(this.label17);
-            this.groupBox8.Controls.Add(this.textBox5);
+            this.groupBox8.Controls.Add(this.tb_feedMissionId_ca);
             this.groupBox8.Location = new System.Drawing.Point(723, 36);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(537, 93);
@@ -1289,6 +1264,7 @@
             this.button39.TabIndex = 3;
             this.button39.Text = "获取请求结果";
             this.button39.UseVisualStyleBackColor = true;
+            this.button39.Click += new System.EventHandler(this.button39_Click);
             // 
             // label17
             // 
@@ -1299,18 +1275,18 @@
             this.label17.TabIndex = 2;
             this.label17.Text = "当前FeedMissionId：";
             // 
-            // textBox5
+            // tb_feedMissionId_ca
             // 
-            this.textBox5.Location = new System.Drawing.Point(176, 45);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(148, 21);
-            this.textBox5.TabIndex = 1;
+            this.tb_feedMissionId_ca.Location = new System.Drawing.Point(176, 45);
+            this.tb_feedMissionId_ca.Name = "tb_feedMissionId_ca";
+            this.tb_feedMissionId_ca.ReadOnly = true;
+            this.tb_feedMissionId_ca.Size = new System.Drawing.Size(148, 21);
+            this.tb_feedMissionId_ca.TabIndex = 1;
             // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.button33);
-            this.groupBox6.Controls.Add(this.textBox2);
+            this.groupBox6.Controls.Add(this.tb_variation_child_filename_ca);
             this.groupBox6.Controls.Add(this.label15);
             this.groupBox6.Controls.Add(this.button34);
             this.groupBox6.Location = new System.Drawing.Point(727, 306);
@@ -1327,14 +1303,15 @@
             this.button33.TabIndex = 13;
             this.button33.Text = "查看文件内容";
             this.button33.UseVisualStyleBackColor = true;
+            this.button33.Click += new System.EventHandler(this.button33_Click);
             // 
-            // textBox2
+            // tb_variation_child_filename_ca
             // 
-            this.textBox2.Location = new System.Drawing.Point(112, 25);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(379, 21);
-            this.textBox2.TabIndex = 12;
+            this.tb_variation_child_filename_ca.Location = new System.Drawing.Point(112, 25);
+            this.tb_variation_child_filename_ca.Name = "tb_variation_child_filename_ca";
+            this.tb_variation_child_filename_ca.ReadOnly = true;
+            this.tb_variation_child_filename_ca.Size = new System.Drawing.Size(379, 21);
+            this.tb_variation_child_filename_ca.TabIndex = 12;
             // 
             // label15
             // 
@@ -1353,19 +1330,20 @@
             this.button34.TabIndex = 0;
             this.button34.Text = "子类加size-color";
             this.button34.UseVisualStyleBackColor = true;
+            this.button34.Click += new System.EventHandler(this.button34_Click);
             // 
-            // textBox4
+            // tb_variation_data_ca
             // 
-            this.textBox4.Location = new System.Drawing.Point(59, 102);
-            this.textBox4.Multiline = true;
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(560, 416);
-            this.textBox4.TabIndex = 22;
+            this.tb_variation_data_ca.Location = new System.Drawing.Point(59, 102);
+            this.tb_variation_data_ca.Multiline = true;
+            this.tb_variation_data_ca.Name = "tb_variation_data_ca";
+            this.tb_variation_data_ca.Size = new System.Drawing.Size(560, 416);
+            this.tb_variation_data_ca.TabIndex = 22;
             // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.button35);
-            this.groupBox7.Controls.Add(this.textBox3);
+            this.groupBox7.Controls.Add(this.tb_variation_parent_filename_ca);
             this.groupBox7.Controls.Add(this.label16);
             this.groupBox7.Controls.Add(this.button36);
             this.groupBox7.Location = new System.Drawing.Point(723, 145);
@@ -1382,15 +1360,16 @@
             this.button35.TabIndex = 10;
             this.button35.Text = "查看文件内容";
             this.button35.UseVisualStyleBackColor = true;
+            this.button35.Click += new System.EventHandler(this.button35_Click);
             // 
-            // textBox3
+            // tb_variation_parent_filename_ca
             // 
-            this.textBox3.Location = new System.Drawing.Point(116, 27);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(379, 21);
-            this.textBox3.TabIndex = 9;
-            this.textBox3.Text = "createVariation\\\\parentProductFeedTemplate.xml";
+            this.tb_variation_parent_filename_ca.Location = new System.Drawing.Point(116, 27);
+            this.tb_variation_parent_filename_ca.Name = "tb_variation_parent_filename_ca";
+            this.tb_variation_parent_filename_ca.ReadOnly = true;
+            this.tb_variation_parent_filename_ca.Size = new System.Drawing.Size(379, 21);
+            this.tb_variation_parent_filename_ca.TabIndex = 9;
+            this.tb_variation_parent_filename_ca.Text = "createVariation\\\\parentProductFeedTemplate_ca.xml";
             // 
             // label16
             // 
@@ -1409,6 +1388,7 @@
             this.button36.TabIndex = 0;
             this.button36.Text = "创建父体";
             this.button36.UseVisualStyleBackColor = true;
+            this.button36.Click += new System.EventHandler(this.button36_Click);
             // 
             // button38
             // 
@@ -1428,26 +1408,7 @@
             this.button37.TabIndex = 24;
             this.button37.Text = "生成绑定变体关系模板";
             this.button37.UseVisualStyleBackColor = true;
-            // 
-            // button40
-            // 
-            this.button40.Location = new System.Drawing.Point(211, 24);
-            this.button40.Name = "button40";
-            this.button40.Size = new System.Drawing.Size(132, 39);
-            this.button40.TabIndex = 10;
-            this.button40.Text = "2、确认订单";
-            this.button40.UseVisualStyleBackColor = true;
-            this.button40.Click += new System.EventHandler(this.button40_Click);
-            // 
-            // button41
-            // 
-            this.button41.Location = new System.Drawing.Point(224, 25);
-            this.button41.Name = "button41";
-            this.button41.Size = new System.Drawing.Size(104, 39);
-            this.button41.TabIndex = 17;
-            this.button41.Text = "2、确认订单";
-            this.button41.UseVisualStyleBackColor = true;
-            this.button41.Click += new System.EventHandler(this.button41_Click);
+            this.button37.Click += new System.EventHandler(this.button37_Click);
             // 
             // button1
             // 
@@ -1507,6 +1468,64 @@
             this.label_monitor_prompt.Size = new System.Drawing.Size(0, 12);
             this.label_monitor_prompt.TabIndex = 1;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(45, 25);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(129, 39);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "1. 拉取订单";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
+            // btn_get_order_report
+            // 
+            this.btn_get_order_report.Location = new System.Drawing.Point(33, 24);
+            this.btn_get_order_report.Name = "btn_get_order_report";
+            this.btn_get_order_report.Size = new System.Drawing.Size(129, 39);
+            this.btn_get_order_report.TabIndex = 1;
+            this.btn_get_order_report.Text = "1、拉取订单";
+            this.btn_get_order_report.UseVisualStyleBackColor = true;
+            this.btn_get_order_report.Click += new System.EventHandler(this.btn_get_order_report_Click);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(416, 50);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(158, 23);
+            this.button6.TabIndex = 19;
+            this.button6.Text = "导出到皇家物流";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click_1);
+            // 
+            // button40
+            // 
+            this.button40.Location = new System.Drawing.Point(640, 25);
+            this.button40.Name = "button40";
+            this.button40.Size = new System.Drawing.Size(162, 39);
+            this.button40.TabIndex = 20;
+            this.button40.Text = "需合并的订单（皇家物流）";
+            this.button40.UseVisualStyleBackColor = true;
+            this.button40.Click += new System.EventHandler(this.button40_Click_1);
+            // 
+            // label_get_order_time
+            // 
+            this.label_get_order_time.AutoSize = true;
+            this.label_get_order_time.ForeColor = System.Drawing.Color.Red;
+            this.label_get_order_time.Location = new System.Drawing.Point(42, 77);
+            this.label_get_order_time.Name = "label_get_order_time";
+            this.label_get_order_time.Size = new System.Drawing.Size(0, 12);
+            this.label_get_order_time.TabIndex = 12;
+            // 
+            // label_get_order_time_ca
+            // 
+            this.label_get_order_time_ca.AutoSize = true;
+            this.label_get_order_time_ca.ForeColor = System.Drawing.Color.Red;
+            this.label_get_order_time_ca.Location = new System.Drawing.Point(52, 80);
+            this.label_get_order_time_ca.Name = "label_get_order_time_ca";
+            this.label_get_order_time_ca.Size = new System.Drawing.Size(0, 12);
+            this.label_get_order_time_ca.TabIndex = 21;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1516,7 +1535,6 @@
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button10);
-            this.Controls.Add(this.button6);
             this.Controls.Add(this.btn_show_order_detail);
             this.Name = "Form1";
             this.Text = "UprightBuz";
@@ -1524,6 +1542,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tp_unshipped_order.ResumeLayout(false);
+            this.tp_unshipped_order.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_unshipped_order)).EndInit();
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_observed_order)).EndInit();
@@ -1552,6 +1571,7 @@
             this.tab_ca.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_unshipped_order_ca)).EndInit();
             this.tabPage9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_observed_order_ca)).EndInit();
@@ -1584,7 +1604,6 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tp_unshipped_order;
         private System.Windows.Forms.DataGridView dgv_unshipped_order;
-        private System.Windows.Forms.Button btn_get_order_report;
         private System.Windows.Forms.Button btn_tag_observed;
         private System.Windows.Forms.Button btn_export_eub_excel;
         private System.Windows.Forms.Button btn_ship_order;
@@ -1609,7 +1628,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.TextBox tb_inbound_quantity;
         private System.Windows.Forms.Label label4;
@@ -1651,7 +1669,6 @@
         private System.Windows.Forms.TabPage tab_ca;
         private System.Windows.Forms.TabControl tabControl3;
         private System.Windows.Forms.TabPage tabPage8;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TabPage tabPage9;
         private System.Windows.Forms.DataGridView dgv_unshipped_order_ca;
         private System.Windows.Forms.Button button22;
@@ -1681,34 +1698,38 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button button31;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tb_variation_bound_filename_ca;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button button32;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Button button39;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox tb_feedMissionId_ca;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button button33;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tb_variation_child_filename_ca;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button button34;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox tb_variation_data_ca;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Button button35;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox tb_variation_parent_filename_ca;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button button36;
         private System.Windows.Forms.Button button38;
         private System.Windows.Forms.Button button37;
-        private System.Windows.Forms.Button button40;
-        private System.Windows.Forms.Button button41;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button42;
         private System.Windows.Forms.TabPage tabPage16;
         private System.Windows.Forms.DataGridView dgv_listing_offer;
         private System.Windows.Forms.TabPage tabPage15;
         private System.Windows.Forms.Label label_monitor_prompt;
+        private System.Windows.Forms.Button btn_get_order_report;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button40;
+        private System.Windows.Forms.Label label_get_order_time;
+        private System.Windows.Forms.Label label_get_order_time_ca;
     }
 }
 

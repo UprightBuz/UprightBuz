@@ -40,19 +40,19 @@ namespace AmazonTest
         public Form1()
         {
             // 把所有的控件合法性线程检查全部都给禁止掉了
-            System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
+            //System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
             requestFeedbackRunning = false;
             UpdateHolidayPrompt();
 
             InitializeComponent();
             tb_list_price.Text = "9.99";
             marketId = GlobalConfig.Instance.MarketID_US;  // 初始默认为US
-            // MarketplaceWebServiceOrdersSample.RunSample();   
-            // MarketplaceWebServiceProductsSample.RunSample();
-            // MarketplaceWebServiceSamples.RunSample();
-            // AdaptPrice.RunAdaptPrice();
-            // MarketplaceWebServiceSamples.GetInventoryReport();
-            // updateInventory();
+                                                           // MarketplaceWebServiceOrdersSample.RunSample();   
+                                                           // MarketplaceWebServiceProductsSample.RunSample();
+                                                           // MarketplaceWebServiceSamples.RunSample();
+                                                           // AdaptPrice.RunAdaptPrice();
+                                                           // MarketplaceWebServiceSamples.GetInventoryReport();
+                                                           // updateInventory();
 
             // Console.WriteLine(GlobalConfig.Instance.TimeFormat);
             //getUnshippedOrders();
@@ -87,13 +87,13 @@ namespace AmazonTest
             //getFBAOrders(GlobalConfig.Instance.MarketID_US);  // 拉取美国站
             //update_inventory(GlobalConfig.Instance.MarketID_US);
             //update_inventory(GlobalConfig.Instance.MarketID_CA);
-        
+
         }
 
- 
+
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
             // *** 暂停
             //timerAdaptPrice = new System.Timers.Timer();
             //timerAdaptPrice.Interval = 15 * 60 * 1000;  // 间隔时间为15min
@@ -127,12 +127,12 @@ namespace AmazonTest
             // 显示未发货订单
             dgv_unshipped_order_BoundDS();
 
-            
+
 
             // debug状态下不执行下面的语句
-            #if (DEBUG)
+#if (DEBUG)
                 return;
-            #endif
+#endif
 
             // 更新货运状态
             Thread threadUpdateShipingStatus = new Thread(UpdateShipingStatus);
@@ -153,10 +153,11 @@ namespace AmazonTest
             //timerRequestFeedback.Enabled = true;
             timerUpdateHolidayPrompt.Enabled = true;
             timerScheduled.Enabled = true;
+            timerMonitorListing.Enabled = true;
         }
 
 
-        
+
         private void button1_Click(object sender, EventArgs e)
         {
             //timerAdaptPrice.Enabled = true;
@@ -186,12 +187,13 @@ namespace AmazonTest
             int minute = DateTime.Now.Minute;
 
             // 每天21:00发送请求评论,拉取fba订单
-            if(hour==21 && minute == 0)
+            if (hour == 21 && minute == 0)
             {
                 SendFeedbackRequestEmail(GlobalConfig.Instance.MarketID_US);
                 getFBAOrders(GlobalConfig.Instance.MarketID_US);  // 拉取美国站
                 // UpdateProductModel(); // 设置机型
-            } else if(hour == 21 && minute == 30)
+            }
+            else if (hour == 21 && minute == 30)
             {
                 //SendFeedbackRequestEmail(GlobalConfig.Instance.MarketID_CA);
                 getFBAOrders(GlobalConfig.Instance.MarketID_CA);  // 拉取加拿大站
@@ -394,7 +396,7 @@ namespace AmazonTest
 
         private void fillShipFile()
         {
- 
+
             try
             {
                 //*** 从数据库中读取未发货订单, 按seller、model、sku排序
@@ -405,12 +407,12 @@ namespace AmazonTest
                 DataSet dsOrderCount = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                     string.Format("select a.order_id, sum(b.quantity) as order_count from t_order_basic as a, t_order_product as b where a.market_id='{0}' and a.order_id=b.order_id and a.order_status=0 and a.order_type=0 group by b.order_id;", marketId), null);
                 Dictionary<string, int> orderCountDict = new Dictionary<string, int>();
-                foreach(DataRow dr in dsOrderCount.Tables[0].Rows)
+                foreach (DataRow dr in dsOrderCount.Tables[0].Rows)
                 {
                     orderCountDict.Add(dr["order_id"].ToString(), Int32.Parse(dr["order_count"].ToString()));
                 }
 
-                string srcFilePath = System.Environment.CurrentDirectory  + "\\shippingInfo\\shiptemplate.xls";
+                string srcFilePath = System.Environment.CurrentDirectory + "\\shippingInfo\\shiptemplate.xls";
 
 
                 //*** read shipping template
@@ -516,8 +518,8 @@ namespace AmazonTest
                 //System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
                 //System.Runtime.InteropServices.Marshal.ReleaseComObject(wSheet);
                 //System.Runtime.InteropServices.Marshal.ReleaseComObject(wBook);
-                wSheet = null;       
-                wBook = null;   
+                wSheet = null;
+                wBook = null;
                 excel = null;
                 //System.GC.Collect(0);
 
@@ -527,13 +529,14 @@ namespace AmazonTest
 
                 Console.WriteLine("Error in shipping File");
             }
-          
-        
-         }
 
-        private void getUnshippedOrders(object param)
+
+        }
+
+        //private void getUnshippedOrders(object param)
+        private void getUnshippedOrders(string market_id)
         {
-            string market_id = (string)param;
+            //string market_id = (string)param;
             //*** 获取订单文件
             //string fileName = String.Format("orderReport/{0}_report_{1}.txt", market_id, DateTime.Now.ToString(GlobalConfig.Instance.TimeFormat));
             //MarketplaceWebServiceSamples.GetReport(GlobalConfig.Instance.UnshippedOrderReportType, fileName, DateTime.Now, DateTime.Now);
@@ -566,13 +569,13 @@ namespace AmazonTest
                         ship_city ship_state ship_postal_code ship_country order_status: 0未发货、1已发货 order_type: 0正常、1假发货、2待观察订单
                         */
                         // 将utc格式的时间转换成mysql的datetime格式 ：2015-09-09T23:29:17-07:00
-                        string[] date = words[3].Split(new char[] { '-', 'T', ':'}, StringSplitOptions.RemoveEmptyEntries);
+                        string[] date = words[3].Split(new char[] { '-', 'T', ':' }, StringSplitOptions.RemoveEmptyEntries);
                         // 转换成本地时间
-                        DateTime payments_date = Convert.ToDateTime(string.Format("{0}-{1}-{2} {3}:{4}:{5}", date[0], date[1], date[2], date[3], date[4], date[5])).AddHours(int.Parse(GlobalConfig.Instance.GetConfigValue(market_id, "timeDifference")));  
+                        DateTime payments_date = Convert.ToDateTime(string.Format("{0}-{1}-{2} {3}:{4}:{5}", date[0], date[1], date[2], date[3], date[4], date[5])).AddHours(int.Parse(GlobalConfig.Instance.GetConfigValue(market_id, "timeDifference")));
                         string payments_date_local = payments_date.ToString("yyyy-MM-dd HH:mm:ss");
 
                         orderCmdTextList.Add(String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', {13}, {14}, '{15}')",
-                            words[0], payments_date_local, words[8], words[7], words[9], words[16], 
+                            words[0], payments_date_local, words[8], words[7], words[9], words[16],
                             words[17], words[18], words[19], words[20], words[21], words[22], words[23], default_order_status, default_order_type, market_id));
                         orderProductCmdTextList.Add(String.Format("('{0}', '{1}', '{2}', {3}, '{4}', '{5}')", words[0], words[1], words[10], words[12], words[11], market_id)); // order_id order_item_id sku quantity product_name market_id
                         line = f.ReadLine();
@@ -588,11 +591,19 @@ namespace AmazonTest
                         int affectedRowsCount = MySqlHelper.ExecuteNonQuery(MySqlHelper.Conn, System.Data.CommandType.Text, cmdText, null);
                         Console.WriteLine("Affected Rows: " + affectedRowsCount);
 
-                        // 绑定数据源
-                        dgv_unshipped_order_BoundDS();
-
                         // 更新库存
                         update_inventory(market_id);
+
+                        // 确认订单
+                        confirm_order(market_id);
+
+                        // 记录上一次拉取时间 INSERT t_product (sku, asin, quantity) values {0} ON DUPLICATE KEY UPDATE
+                        MySqlHelper.ExecuteNonQuery(MySqlHelper.Conn, System.Data.CommandType.Text, 
+                            String.Format("insert t_config (config_name, config_value, market_id) values ('{0}', '{1}', '{2}') ON DUPLICATE KEY UPDATE config_value='{3}';", 
+                            "get_order_latest_request_date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), market_id, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")), null);
+
+                        // 绑定数据源
+                        dgv_unshipped_order_BoundDS();
 
                     }
                 }
@@ -611,7 +622,7 @@ namespace AmazonTest
         private void getFBAOrders(string market_id)
         {
             // 读取上一次请求报告的时间
-            DataSet ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text, 
+            DataSet ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                 string.Format("select config_value from t_config where config_name='fba_order_latest_request_date' and market_id='{0}'", market_id), null);
             DateTime startDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["config_value"]);
             DateTime endDate = DateTime.Now;
@@ -774,7 +785,7 @@ namespace AmazonTest
         {
             Console.WriteLine("SendFeedbackRequestEmail");
             //if (!requestFeedbackRunning)  // 同一时间只有一个在运行，避免重复发送邮件
-            if (true)  
+            if (true)
             {
                 requestFeedbackRunning = true;
                 DataSet ds;
@@ -846,7 +857,7 @@ namespace AmazonTest
             string cmdText = String.Format("select track_id from t_order_basic where order_status=1 and order_type=0 and is_delivered=0 and track_id!='' and payments_date<='{0}'", DateTime.Now.AddDays(-7));
             DataSet ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text, cmdText, null);
             List<string> cmdList = new List<string>();
-            foreach(DataRow dr in ds.Tables[0].Rows)
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 Console.WriteLine(dr["track_id"]);
                 int is_delivered = GetShippingStatus(dr["track_id"].ToString());
@@ -854,7 +865,7 @@ namespace AmazonTest
                 if (is_delivered != 0)  // 未送达的不需要更新
                 {
                     cmdList.Add(String.Format("update t_order_basic set is_delivered={0}, deliver_date='{1}' where track_id='{2}'", is_delivered, DateTime.Now.ToString("yyyy-MM-dd"), dr["track_id"]));
-                }             
+                }
             }
             if (cmdList.Count > 0)
             {
@@ -898,14 +909,14 @@ namespace AmazonTest
             {
                 string[] words = line.Split('\t');
                 string[] expectWords = { "sku", "asin", "price", "quantity" };
-                if (string.Join(",", words)==string.Join(",", expectWords))
+                if (string.Join(",", words) == string.Join(",", expectWords))
                 {
                     line = f.ReadLine();
                     List<string> cmdTextList = new List<string>();
                     while (line != null)
                     {
                         words = line.Split('\t');
-                        cmdTextList.Add(String.Format("('{0}', '{1}', {2})", words[0], words[1], words[3]==""? "0" : words[3]));
+                        cmdTextList.Add(String.Format("('{0}', '{1}', {2})", words[0], words[1], words[3] == "" ? "0" : words[3]));
                         line = f.ReadLine();
                     }
                     f.Close();
@@ -926,7 +937,7 @@ namespace AmazonTest
             {
                 // todo 写入log
             }
-            
+
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -947,9 +958,24 @@ namespace AmazonTest
             DialogResult dlgResult = MessageBox.Show(msgBoxText, "确认", MessageBoxButtons.OKCancel);
             if (dlgResult == DialogResult.OK)
             {
+                // 显示提示文字：正在拉取订单，请稍等。。。
+                System.Windows.Forms.Label label;
+                if (marketId == GlobalConfig.Instance.MarketID_CA)
+                {
+                    label = label_get_order_time_ca;
+                }
+                else
+                {
+                    label = label_get_order_time;
+                }
+                label.Text = "正在拉取订单，请稍等。。。";
+
                 // 从亚马逊拉取未发货订单入库
-                Thread thread = new Thread(getUnshippedOrders);
-                thread.Start(marketId);
+                getUnshippedOrders(marketId);
+
+                // 多线程 有bug
+                //Thread thread = new Thread(getUnshippedOrders);
+                //thread.Start(marketId);
             }
         }
 
@@ -959,13 +985,16 @@ namespace AmazonTest
             DataSet ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                 string.Format("select a.order_id, b.order_item_id, a.payments_date, a.confirmed_date, b.sku, b.quantity, a.track_id, a.buyer_name, a.recipient_name, a.ship_country, a.ship_state, a.ship_city, a.ship_address_1, a.ship_address_2, a.ship_address_3 from t_order_basic as a, t_order_product as b where a.market_id='{0}' and a.order_id=b.order_id and a.order_status=0 and a.order_type=0", marketId), null);
             DataGridView dgv;
+            System.Windows.Forms.Label label;
             if (marketId == GlobalConfig.Instance.MarketID_CA)
             {
                 dgv = dgv_unshipped_order_ca;
+                label = label_get_order_time_ca;
             }
             else
             {
                 dgv = dgv_unshipped_order;
+                label = label_get_order_time;
             }
 
             // 绑定到datagridview
@@ -978,7 +1007,16 @@ namespace AmazonTest
             for (int i = 0; i < 14; ++i)
             {
                 dgv.AutoResizeColumn(i);
-            } 
+            }
+
+            // 显示上一次拉取时间
+            ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text, String.Format("select config_value from t_config where config_name='{0}' and market_id='{1}'", "get_order_latest_request_date", marketId), null);
+            string latest_date = "";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                latest_date = ds.Tables[0].Rows[0]["config_value"].ToString();
+            }
+            label.Text = String.Format("最近更新时间：{0}", latest_date);
         }
 
         private void dgv_fba_order_BoundDS()
@@ -1176,8 +1214,8 @@ namespace AmazonTest
 
         private void dgv_unshipped_order_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
-            //SolidBrush solidBrush = new SolidBrush(dgv_unshipped_order.RowHeadersDefaultCellStyle.ForeColor);
-            //e.Graphics.DrawString((e.RowIndex + 1).ToString(), e.InheritedRowStyle.Font, solidBrush, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + 5);
+            SolidBrush solidBrush = new SolidBrush(dgv_unshipped_order.RowHeadersDefaultCellStyle.ForeColor);
+            e.Graphics.DrawString((e.RowIndex + 1).ToString(), e.InheritedRowStyle.Font, solidBrush, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + 5);
         }
 
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
@@ -1271,7 +1309,7 @@ namespace AmazonTest
             {
                 return 1;
             }
-            else if(responseContent.IndexOf("status-alert") != -1) // 投递失败
+            else if (responseContent.IndexOf("status-alert") != -1) // 投递失败
             {
                 return 2;
             }
@@ -1385,7 +1423,7 @@ namespace AmazonTest
             {
                 // 写入数据库
                 string cmdText = String.Format("update t_order_basic set order_type=1 where order_id in ({0}) and market_id='{1}'", String.Join(",", fakeShippedOrderIdList), marketId);
-                int affectedRowsCount = MySqlHelper.ExecuteNonQuery(MySqlHelper.Conn, System.Data.CommandType.Text, cmdText, null); 
+                int affectedRowsCount = MySqlHelper.ExecuteNonQuery(MySqlHelper.Conn, System.Data.CommandType.Text, cmdText, null);
             }
         }
 
@@ -1403,19 +1441,20 @@ namespace AmazonTest
             DataSet ds_sku_count;
             DataSet model_ds;
             DataSet seller_ds;
+            DataSet seller_model_ds;
             if (market_id == "") // 统计所有站点
             {
                 // 获取每个sku的销售数量
                 ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                     "select b.sku, sum(quantity) as total from t_order_basic as a, t_order_product as b where a.order_id=b.order_id and a.order_status=0 and a.order_type=0 group by b.sku order by total desc", null);
-                
+
                 // 获取订单总数
                 ds_order_count = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text, "select count(*) from t_order_basic where order_status=0 and order_type=0;", null);
-                
+
                 // 获取多个订单总数
-                ds_large_order_count = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text, 
+                ds_large_order_count = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                     "select b.order_id from t_order_basic as a, t_order_product as b where a.order_id=b.order_id and a.order_status=0 and a.order_type=0 group by b.order_id having sum(quantity)>1;", null);
-                
+
                 // 从数据库中读取未发货订单货物总数
                 ds_sku_count = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                     "select sum(b.quantity) as total from t_order_basic as a, t_order_product as b where a.order_status=0 and a.order_type=0 and a.order_id=b.order_id;", null);
@@ -1427,24 +1466,29 @@ namespace AmazonTest
                 // 统计各个商家的销售数量
                 seller_ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                     "select d.seller_name, sum(b.quantity) as total from t_order_basic as a, t_order_product as b, t_product as c, t_seller as d where a.order_status=0 and a.order_type=0 and a.order_id=b.order_id and b.sku=c.sku and c.seller=d.seller_id group by c.seller order by total desc;", null);
+
+                // 统计各个商家各个型号的销量
+                seller_model_ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
+                    "select sum(b.quantity) as total, c.model, c.seller, d.seller_name from t_order_basic as a, t_order_product as b, t_product as c, t_seller as d where a.order_id=b.order_id and a.order_status=0 and a.order_type=0 and b.sku=c.sku and c.seller=d.seller_id group by c.seller, c.model order by c.seller;", null);
+
             }
             else  // 统计指定站点
             {
                 // 获取每个sku的销售数量
                 ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                     string.Format("select b.sku, sum(quantity) as total from t_order_basic as a, t_order_product as b where a.order_id=b.order_id and a.market_id='{0}' and a.order_status=0 and a.order_type=0 group by b.sku order by total desc", market_id), null);
-                
+
                 // 获取订单总数
-                ds_order_count = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text, string.Format("select count(*) from t_order_basic where order_status=0 and order_type=0 and market_id='{0}';", market_id), null); 
-                
+                ds_order_count = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text, string.Format("select count(*) from t_order_basic where order_status=0 and order_type=0 and market_id='{0}';", market_id), null);
+
                 // 获取多个订单总数
-                ds_large_order_count = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text, 
+                ds_large_order_count = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                     string.Format("select b.order_id from t_order_basic as a, t_order_product as b where a.market_id='{0}' and a.order_id=b.order_id and a.order_status=0 and a.order_type=0  group by b.order_id having sum(quantity)>1;", market_id), null);
-                
+
                 // 从数据库中读取未发货订单货物总数
                 ds_sku_count = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                     string.Format("select sum(b.quantity) as total from t_order_basic as a, t_order_product as b where a.market_id='{0}' and a.order_status=0 and a.order_type=0 and a.order_id=b.order_id;", market_id), null);
-                
+
                 // 统计各个机型的销售数量
                 model_ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                     string.Format("select c.model, sum(b.quantity) as total from t_order_basic as a, t_order_product as b, t_product as c where a.market_id='{0}' and a.order_status=0 and a.order_type=0 and a.order_id=b.order_id and b.sku=c.sku group by c.model order by total desc;", market_id), null);
@@ -1452,6 +1496,10 @@ namespace AmazonTest
                 // 统计各个商家的销售数量
                 seller_ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
                     string.Format("select d.seller_name, sum(b.quantity) as total from t_order_basic as a, t_order_product as b, t_product as c, t_seller as d where a.market_id='{0}' and a.order_status=0 and a.order_type=0 and a.order_id=b.order_id and b.sku=c.sku and c.seller=d.seller_id group by c.seller order by total desc;", market_id), null);
+
+                // 统计各个商家各个型号的销量
+                seller_model_ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
+                    string.Format("select sum(b.quantity) as total, c.model, c.seller, d.seller_name from t_order_basic as a, t_order_product as b, t_product as c, t_seller as d where a.market_id='{0}' and a.order_id=b.order_id and a.order_status=0 and a.order_type=0 and b.sku=c.sku and c.seller=d.seller_id group by c.seller, c.model order by c.seller;", market_id), null);
 
             }
             DateTime now = DateTime.Now;
@@ -1482,7 +1530,7 @@ namespace AmazonTest
             skuCountList.Add("-----------------------------------------------");
             skuCountList.Add("-----------------------------------------------");
 
-            
+
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 skuCountList.Add(String.Format("{0,-20}\t{1}", dr["sku"], dr["total"]));
@@ -1494,7 +1542,7 @@ namespace AmazonTest
             skuCountList.Add("机型汇总统计");
             skuCountList.Add("-----------------------------------------------");
             skuCountList.Add("-----------------------------------------------");
-            
+
             foreach (DataRow dr in model_ds.Tables[0].Rows)
             {
                 skuCountList.Add(String.Format("{0,-10}\t{1}", dr["model"], dr["total"]));
@@ -1506,10 +1554,22 @@ namespace AmazonTest
             skuCountList.Add("商家汇总统计");
             skuCountList.Add("-----------------------------------------------");
             skuCountList.Add("-----------------------------------------------");
-            
+
             foreach (DataRow dr in seller_ds.Tables[0].Rows)
             {
                 skuCountList.Add(String.Format("{0,-10}\t{1}", dr["seller_name"], dr["total"]));
+            }
+
+            // 商家各型号汇总统计
+            skuCountList.Add("-----------------------------------------------");
+            skuCountList.Add("-----------------------------------------------");
+            skuCountList.Add("商家各型号汇总统计");
+            skuCountList.Add("-----------------------------------------------");
+            skuCountList.Add("-----------------------------------------------");
+
+            foreach (DataRow dr in seller_model_ds.Tables[0].Rows)
+            {
+                skuCountList.Add(String.Format("{0}#{1,-10}\t{2, -10}\t{3}", dr["seller"], dr["seller_name"], dr["model"], dr["total"]));
             }
 
             System.IO.File.WriteAllLines(fileName, skuCountList);
@@ -1587,7 +1647,7 @@ namespace AmazonTest
             DialogResult dlgResult = MessageBox.Show(msgBoxText, "确认", MessageBoxButtons.OKCancel);
             if (dlgResult == DialogResult.OK)
             {
-                int affectedRowsCount = MySqlHelper.ExecuteNonQuery(MySqlHelper.Conn, System.Data.CommandType.Text, 
+                int affectedRowsCount = MySqlHelper.ExecuteNonQuery(MySqlHelper.Conn, System.Data.CommandType.Text,
                     String.Format("update t_product set inventory=inventory+{0} where sku='{1}'", quantity, sku), null);
                 if (affectedRowsCount != 1)
                 {
@@ -1602,7 +1662,7 @@ namespace AmazonTest
                     tb_inbound_sku.Text = "";
                 }
 
-                
+
             }
         }
 
@@ -1634,9 +1694,9 @@ namespace AmazonTest
                 cmdTextList.Add(String.Format("update t_product set inventory=inventory-{0}, inventory_threshold={1} where sku='{2}'", dr["sku_sum"], Int32.Parse(dr["sku_sum"].ToString()) * 2, dr["sku"]));
             }
 
-            // 销量单独统计
+            // 销量单独统计，假发货列表中的也要统计进来
             DataSet ds_sku_total = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
-                "select b.sku, sum(b.quantity) as sku_sum from t_order_basic as a, t_order_product as b where a.order_status=0 and a.order_type=0 and a.order_id=b.order_id group by b.sku;", null);
+                "select b.sku, sum(b.quantity) as sku_sum from t_order_basic as a, t_order_product as b where ((a.order_status=0 and a.order_type=0) or (a.order_type=1)) and a.order_id=b.order_id group by b.sku;", null);
             foreach (DataRow dr in ds_sku_total.Tables[0].Rows)
             {
                 cmdTextList.Add(String.Format("update t_product set today_sales={0} where sku='{1}'", Int32.Parse(dr["sku_sum"].ToString()), dr["sku"]));
@@ -1655,7 +1715,7 @@ namespace AmazonTest
         // 获取进货报告
         private void button5_Click(object sender, EventArgs e)
         {
-            
+
             get_restock_report();
 
         }
@@ -1918,9 +1978,9 @@ namespace AmazonTest
             {
                 if (NextFile.Name.Contains("-1.jpg"))
                 {
-                    NextFile.MoveTo(NextFile.Directory+ @"/" + NextFile.Name.TrimEnd("-1.jpg".ToCharArray()) + ".jpg");
+                    NextFile.MoveTo(NextFile.Directory + @"/" + NextFile.Name.TrimEnd("-1.jpg".ToCharArray()) + ".jpg");
                 }
-                
+
             }
         }
 
@@ -1982,7 +2042,7 @@ namespace AmazonTest
             DialogResult dlgResult = MessageBox.Show("一键入库：将进货列表中的所有sku按缺货数量入库。确认操作？", "确认", MessageBoxButtons.OKCancel);
             if (dlgResult == DialogResult.OK)
             {
-                DataSet ds = GetRestockDataSet();                
+                DataSet ds = GetRestockDataSet();
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     int affectedRowsCount = MySqlHelper.ExecuteNonQuery(MySqlHelper.Conn, System.Data.CommandType.Text,
@@ -1992,7 +2052,7 @@ namespace AmazonTest
                         // 保存进货记录
                         MySqlHelper.ExecuteNonQuery(MySqlHelper.Conn, System.Data.CommandType.Text,
                             String.Format("insert into t_inbound_record(sku, total, create_date) values('{0}',{1},'{2}');", dr["sku"], Math.Abs(int.Parse(dr["inventory"].ToString())), DateTime.Now.ToShortDateString()), null);
-                    }   
+                    }
                 }
                 MessageBox.Show("操作成功，请录入其他情况（缺货sku & 多进货sku）", "确认", MessageBoxButtons.OK);
             }
@@ -2030,7 +2090,16 @@ namespace AmazonTest
 
         private void submitFeed(string market_id, string filename, string feedType)
         {
-            tb_feedMissionId.Text = "";
+            System.Windows.Forms.TextBox tb_current;
+            if (market_id == GlobalConfig.Instance.MarketID_CA)
+            {
+                tb_current = tb_feedMissionId_ca;
+            }
+            else
+            {
+                tb_current = tb_feedMissionId;
+            }
+            tb_current.Text = "";
             string feedSubmissionId = MarketplaceWebServiceSamples.SubmitFeed(market_id, filename, feedType);
             if (feedSubmissionId == "")
             {
@@ -2039,43 +2108,68 @@ namespace AmazonTest
             else
             {
                 MessageBox.Show("请求成功，请稍后获取请求结果", "确认", MessageBoxButtons.OK);
-                tb_feedMissionId.Text = feedSubmissionId;
+                tb_current.Text = feedSubmissionId;
             }
         }
 
         // 创建父体
         private void button13_Click(object sender, EventArgs e)
         {
-            string market_id = GlobalConfig.Instance.MarketID_US;
-            if (tb_variation_parent_filename.Text.ToString() == "")
+            create_variation_parent();
+        }
+
+        private void create_variation_parent()
+        {
+            string filename;
+            if (marketId == GlobalConfig.Instance.MarketID_CA)
             {
-                MessageBox.Show("清先生成XML文件", "确认", MessageBoxButtons.OK);
+                filename = tb_variation_parent_filename_ca.Text.ToString();
+            }
+            else
+            {
+                filename = tb_variation_parent_filename.Text.ToString();
+            }
+            if (filename == "")
+            {
+                MessageBox.Show("请先生成XML文件", "确认", MessageBoxButtons.OK);
             }
             else
             {
                 DialogResult dlgResult = MessageBox.Show("确认操作？", "确认", MessageBoxButtons.OKCancel);
                 if (dlgResult == DialogResult.OK)
                 {
-                    submitFeed(market_id, tb_variation_parent_filename.Text.ToString(), GlobalConfig.Instance.GetCommonConfigValue("updateProductFeedType"));
+                    submitFeed(marketId, filename, GlobalConfig.Instance.GetCommonConfigValue("updateProductFeedType"));
                 }
             }
-            
         }
 
         // 子类加size-color
         private void button14_Click(object sender, EventArgs e)
         {
-            string market_id = GlobalConfig.Instance.MarketID_US;
-            if (tb_variation_child_filename.Text.ToString() == "")
+            append_size_color_to_child();
+        }
+
+        private void append_size_color_to_child()
+        {
+            string filename;
+            if (marketId == GlobalConfig.Instance.MarketID_CA)
             {
-                MessageBox.Show("清先生成XML文件", "确认", MessageBoxButtons.OK);
+                filename = tb_variation_child_filename_ca.Text.ToString();
+            }
+            else
+            {
+                filename = tb_variation_child_filename.Text.ToString();
+            }
+            if (filename == "")
+            {
+                MessageBox.Show("请先生成XML文件", "确认", MessageBoxButtons.OK);
             }
             else
             {
                 DialogResult dlgResult = MessageBox.Show("确认操作？", "确认", MessageBoxButtons.OKCancel);
                 if (dlgResult == DialogResult.OK)
                 {
-                    submitFeed(market_id, tb_variation_child_filename.Text.ToString(), GlobalConfig.Instance.GetCommonConfigValue("updateProductFeedType"));
+                    submitFeed(marketId, filename, GlobalConfig.Instance.GetCommonConfigValue("updateProductFeedType"));
                 }
             }
         }
@@ -2083,32 +2177,61 @@ namespace AmazonTest
         // 子类绑定到父类
         private void button15_Click(object sender, EventArgs e)
         {
-            string market_id = GlobalConfig.Instance.MarketID_US;
-            if (tb_variation_bound_filename.Text.ToString() == "")
+            bound_child_with_parent();
+        }
+
+
+        private void bound_child_with_parent()
+        {
+            string filename;
+            if (marketId == GlobalConfig.Instance.MarketID_CA)
             {
-                MessageBox.Show("清先生成XML文件", "确认", MessageBoxButtons.OK);
+                filename = tb_variation_bound_filename_ca.Text.ToString();
+            }
+            else
+            {
+                filename = tb_variation_bound_filename.Text.ToString();
+            }
+            if (filename == "")
+            {
+                MessageBox.Show("请先生成XML文件", "确认", MessageBoxButtons.OK);
             }
             else
             {
                 DialogResult dlgResult = MessageBox.Show("确认操作？", "确认", MessageBoxButtons.OKCancel);
                 if (dlgResult == DialogResult.OK)
                 {
-                    submitFeed(market_id, tb_variation_bound_filename.Text.ToString(), GlobalConfig.Instance.GetCommonConfigValue("createRelationshipFeedType"));
+                    submitFeed(marketId, filename, GlobalConfig.Instance.GetCommonConfigValue("createRelationshipFeedType"));
                 }
             }
         }
 
+
         // 获取feed执行结果
         private void button16_Click(object sender, EventArgs e)
         {
-            string market_id = GlobalConfig.Instance.MarketID_US;
-            if (tb_feedMissionId.Text.ToString() != "")
+            get_variation_result();
+        }
+
+
+        private void get_variation_result()
+        {
+            string feedMissionId;
+            if (marketId == GlobalConfig.Instance.MarketID_CA)
+            {
+                feedMissionId = tb_feedMissionId_ca.Text.ToString();
+            }
+            else
+            {
+                feedMissionId = tb_feedMissionId.Text.ToString();
+            }
+            if (feedMissionId != "")
             {
                 DialogResult dlgResult = MessageBox.Show("确认操作？", "确认", MessageBoxButtons.OKCancel);
                 if (dlgResult == DialogResult.OK)
                 {
-                    string fileName = String.Format("feedSubmissionResult\\feedSubmissionResult_{0}.xml", DateTime.Now.ToString(GlobalConfig.Instance.GetCommonConfigValue("timeFormat")));
-                    MarketplaceWebServiceSamples.GetFeedSubmissionResult(market_id, tb_feedMissionId.Text.ToString(), fileName);
+                    string fileName = String.Format("feedSubmissionResult\\feedSubmissionResult_{0}_{1}.xml", DateTime.Now.ToString(GlobalConfig.Instance.GetCommonConfigValue("timeFormat")), marketId);
+                    MarketplaceWebServiceSamples.GetFeedSubmissionResult(marketId, feedMissionId, fileName);
                     // 打开文件
                     System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + "\\" + fileName);
                 }
@@ -2123,21 +2246,40 @@ namespace AmazonTest
         // 生成子类变体模板
         private void button17_Click(object sender, EventArgs e)
         {
+            create_variation_size_color();
+        }
+
+        private void create_variation_size_color()
+        {
             DialogResult dlgResult = MessageBox.Show("确认操作？", "确认", MessageBoxButtons.OKCancel);
-            if (dlgResult == DialogResult.OK && tb_variation_data.Text.ToString()!="")
+
+            System.Windows.Forms.TextBox tb_current;
+            System.Windows.Forms.TextBox tb_variation_child_filename_current;
+            if (marketId == GlobalConfig.Instance.MarketID_CA)
+            {
+                tb_current = tb_variation_data_ca;
+                tb_variation_child_filename_current = tb_variation_child_filename_ca;
+            }
+            else
+            {
+                tb_current = tb_variation_data;
+                tb_variation_child_filename_current = tb_variation_child_filename;
+            }
+
+            if (dlgResult == DialogResult.OK && tb_current.Text.ToString() != "")
             {
                 //*** 生成feed的xml文件
                 DateTime now = DateTime.Now;
-                string fileName = String.Format("createVariation\\childProductFeed_{0}.xml", now.ToString(GlobalConfig.Instance.GetCommonConfigValue("timeFormat")));
+                string fileName = String.Format("createVariation\\childProductFeed_{0}_{1}.xml", now.ToString(GlobalConfig.Instance.GetCommonConfigValue("timeFormat")), marketId);
                 File.Copy("createVariation\\childProductFeedTemplate.xml", fileName);
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load(fileName);
                 var root = xmlDocument.DocumentElement;
 
-                string feedFormat = "<MessageID>{0}</MessageID><OperationType>PartialUpdate</OperationType><Product><SKU>{1}</SKU><ProductData><ToysBaby><ProductType>BabyProducts</ProductType><VariationData><Parentage>child</Parentage><VariationTheme>Size-Color</VariationTheme></VariationData><Size>{2}</Size><SizeMap>{3}</SizeMap><Color>{4}</Color><ColorMap>{5}</ColorMap></ToysBaby></ProductData></Product>";
+                string feedFormat = "<MessageID>{0}</MessageID><OperationType>PartialUpdate</OperationType><Product><SKU>{1}</SKU><ProductData><ToysBaby><ProductType>BabyProducts</ProductType><CustomerPackageType>Standard Packaging</CustomerPackageType><VariationData><Parentage>child</Parentage><VariationTheme>Size-Color</VariationTheme></VariationData><Size>{2}</Size><SizeMap>{3}</SizeMap><Color>{4}</Color><ColorMap>{5}</ColorMap></ToysBaby></ProductData></Product>";
                 int index = 1;
 
-                string[] sArray = Regex.Split(tb_variation_data.Text.ToString(), "\r\n");
+                string[] sArray = Regex.Split(tb_current.Text.ToString(), "\r\n");
                 foreach (string line in sArray)
                 {
                     // sku color size
@@ -2149,10 +2291,10 @@ namespace AmazonTest
                         root.AppendChild(newElement);
                         ++index;
                     }
-                    
-                }                              
+
+                }
                 xmlDocument.Save(fileName);
-                tb_variation_child_filename.Text = fileName;
+                tb_variation_child_filename_current.Text = fileName;
                 MessageBox.Show("文件已生成，请检查文件内容", "确认", MessageBoxButtons.OK);
             }
         }
@@ -2161,12 +2303,30 @@ namespace AmazonTest
         // 生成绑定变体关系模板
         private void button18_Click(object sender, EventArgs e)
         {
+            create_bound_variation();
+        }
+
+
+        private void create_bound_variation()
+        {
             DialogResult dlgResult = MessageBox.Show("确认操作？", "确认", MessageBoxButtons.OKCancel);
-            if (dlgResult == DialogResult.OK && tb_variation_data.Text.ToString() != "")
+            System.Windows.Forms.TextBox tb_current;
+            System.Windows.Forms.TextBox tb_variation_bound_filename_current;
+            if (marketId == GlobalConfig.Instance.MarketID_CA)
+            {
+                tb_current = tb_variation_data_ca;
+                tb_variation_bound_filename_current = tb_variation_bound_filename_ca;
+            }
+            else
+            {
+                tb_current = tb_variation_data;
+                tb_variation_bound_filename_current = tb_variation_bound_filename;
+            }
+            if (dlgResult == DialogResult.OK && tb_current.Text.ToString() != "")
             {
                 //*** 生成feed的xml文件
                 DateTime now = DateTime.Now;
-                string fileName = String.Format("createVariation\\relationshipFeed_{0}.xml", now.ToString(GlobalConfig.Instance.GetCommonConfigValue("timeFormat")));
+                string fileName = String.Format("createVariation\\relationshipFeed_{0}_{1}.xml", now.ToString(GlobalConfig.Instance.GetCommonConfigValue("timeFormat")), marketId);
                 File.Copy("createVariation\\relationshipTemplate.xml", fileName);
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load(fileName);
@@ -2176,7 +2336,7 @@ namespace AmazonTest
                 string parent_sku = "";
                 string feedContent = "";
 
-                string[] sArray = Regex.Split(tb_variation_data.Text.ToString(), "\r\n");
+                string[] sArray = Regex.Split(tb_current.Text.ToString(), "\r\n");
                 foreach (string line in sArray)
                 {
                     // sku parent_sku
@@ -2184,7 +2344,7 @@ namespace AmazonTest
                     if (sItem.Count() == 2)
                     {
                         feedContent += String.Format(feedFormat, sItem[0]);
-                        parent_sku = sItem[1];                
+                        parent_sku = sItem[1];
                     }
                 }
 
@@ -2192,7 +2352,7 @@ namespace AmazonTest
                 newElement.InnerXml = String.Format("<MessageID>1</MessageID><OperationType>Update</OperationType><Relationship><ParentSKU>{0}</ParentSKU>{1}</Relationship>", parent_sku, feedContent);
                 root.AppendChild(newElement);
                 xmlDocument.Save(fileName);
-                tb_variation_bound_filename.Text = fileName;
+                tb_variation_bound_filename_current.Text = fileName;
                 MessageBox.Show("文件已生成，请检查文件内容", "确认", MessageBoxButtons.OK);
             }
         }
@@ -2213,7 +2373,7 @@ namespace AmazonTest
             {
                 System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + "\\" + tb_variation_parent_filename.Text.ToString());
             }
-            
+
         }
 
         // 查看更新子类变体模板内容
@@ -2244,13 +2404,13 @@ namespace AmazonTest
 
         private void button22_Click(object sender, EventArgs e)
         {
-            
-           
+
+
         }
 
         private void tabControl2_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void tabControl2_Selected(object sender, TabControlEventArgs e)
@@ -2279,11 +2439,153 @@ namespace AmazonTest
             tag_observed();
         }
 
+
         private void button25_Click(object sender, EventArgs e)
         {
-            // 生成eub的订单文件
+            // 生成EUB的订单文件
             fillShipFile();
             MessageBox.Show("导出成功！", "提示", MessageBoxButtons.OK);
+        }
+
+
+        // 生成皇家物流的订单文件
+        private void fillShipFile_PFC()
+        {
+            try
+            {
+                //*** 从数据库中读取未发货订单, 按seller、model、sku排序
+                DataSet ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
+                    string.Format("select a.*, b.sku, b.order_item_id, b.quantity, c.seller from t_order_basic as a, t_order_product as b, t_product as c where a.market_id='{0}' and a.order_id=b.order_id and a.order_status=0 and a.order_type=0 and b.sku=c.sku order by c.model,c.seller,b.sku;", marketId), null);
+
+                //*** 从数据库中读取每个订单的数量
+                DataSet dsOrderCount = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
+                    string.Format("select a.order_id, sum(b.quantity) as order_count from t_order_basic as a, t_order_product as b where a.market_id='{0}' and a.order_id=b.order_id and a.order_status=0 and a.order_type=0 group by b.order_id;", marketId), null);
+                Dictionary<string, int> orderCountDict = new Dictionary<string, int>();
+                foreach (DataRow dr in dsOrderCount.Tables[0].Rows)
+                {
+                    orderCountDict.Add(dr["order_id"].ToString(), Int32.Parse(dr["order_count"].ToString()));
+                }
+
+                string srcFilePath = System.Environment.CurrentDirectory + "\\shippingInfo\\shiptemplate_pfc.xls";
+
+
+                //*** read shipping template
+                Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.ApplicationClass();
+                excel.Visible = false;
+                Workbook wBook = excel.Workbooks.Open(srcFilePath, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                Worksheet wSheet = wBook.Sheets[1] as Worksheet; //第一个sheet页
+
+                //*** write order info
+                int rowIndex = 2;
+
+
+                // 1. 先处理只包含1个的            
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string order_id = dr["order_id"].ToString();
+                    if (orderCountDict[order_id] == 1)
+                    {
+                        wSheet.Cells[rowIndex, 1] = order_id;
+                        wSheet.Cells[rowIndex, 3] = "HKAPOST";   // 香港平邮
+                        wSheet.Cells[rowIndex, 5] = dr["recipient_name"].ToString();
+                        wSheet.Cells[rowIndex, 6] = dr["ship_country"].ToString();
+                        wSheet.Cells[rowIndex, 7] = dr["ship_address_1"].ToString();
+                        wSheet.Cells[rowIndex, 8] = dr["ship_address_2"].ToString();
+                        wSheet.Cells[rowIndex, 9] = dr["ship_city"].ToString();
+                        wSheet.Cells[rowIndex, 10] = dr["ship_state"].ToString();
+                        wSheet.Cells[rowIndex, 11] = "'" + dr["ship_postal_code"].ToString();
+                        wSheet.Cells[rowIndex, 12] = "'" + dr["buyer_phone"].ToString();
+                        wSheet.Cells[rowIndex, 16] = dr["sku"].ToString();
+                        wSheet.Cells[rowIndex, 17] = "Phone case#" + dr["seller"].ToString() + "  " + dr["sku"].ToString();
+                        wSheet.Cells[rowIndex, 18] = "手机壳";
+                        wSheet.Cells[rowIndex, 20] = dr["quantity"].ToString();
+                        wSheet.Cells[rowIndex, 21] = 1;
+                        wSheet.Cells[rowIndex, 22] = 0.03;
+                        ++rowIndex;
+                    }
+                }
+
+                // 2. 再处理包含2-3个的
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string order_id = dr["order_id"].ToString();
+                    if (orderCountDict[order_id] == 2 || orderCountDict[order_id] == 3)
+                    {
+                        wSheet.Cells[rowIndex, 1] = order_id;
+                        wSheet.Cells[rowIndex, 3] = "HKAPOST";   // 香港平邮
+                        wSheet.Cells[rowIndex, 5] = dr["recipient_name"].ToString();
+                        wSheet.Cells[rowIndex, 6] = dr["ship_country"].ToString();
+                        wSheet.Cells[rowIndex, 7] = dr["ship_address_1"].ToString();
+                        wSheet.Cells[rowIndex, 8] = dr["ship_address_2"].ToString();
+                        wSheet.Cells[rowIndex, 9] = dr["ship_city"].ToString();
+                        wSheet.Cells[rowIndex, 10] = dr["ship_state"].ToString();
+                        wSheet.Cells[rowIndex, 11] = "'" + dr["ship_postal_code"].ToString();
+                        wSheet.Cells[rowIndex, 12] = "'" + dr["buyer_phone"].ToString();
+                        wSheet.Cells[rowIndex, 16] = dr["sku"].ToString();
+                        wSheet.Cells[rowIndex, 17] = "Phone case# " + dr["seller"].ToString() + "  " + dr["sku"].ToString();
+                        wSheet.Cells[rowIndex, 18] = "手机壳#1";
+                        wSheet.Cells[rowIndex, 20] = dr["quantity"].ToString();
+                        wSheet.Cells[rowIndex, 21] = 1;
+                        wSheet.Cells[rowIndex, 22] = 0.03;
+                        ++rowIndex;
+                    }
+                }
+
+                // 3. 最后处理超过3个以上的
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string order_id = dr["order_id"].ToString();
+                    if (orderCountDict[order_id] > 3)
+                    {
+                        wSheet.Cells[rowIndex, 1] = order_id;
+                        wSheet.Cells[rowIndex, 3] = "HKAPOST";   // 香港平邮
+                        wSheet.Cells[rowIndex, 5] = dr["recipient_name"].ToString();
+                        wSheet.Cells[rowIndex, 6] = dr["ship_country"].ToString();
+                        wSheet.Cells[rowIndex, 7] = dr["ship_address_1"].ToString();
+                        wSheet.Cells[rowIndex, 8] = dr["ship_address_2"].ToString();
+                        wSheet.Cells[rowIndex, 9] = dr["ship_city"].ToString();
+                        wSheet.Cells[rowIndex, 10] = dr["ship_state"].ToString();
+                        wSheet.Cells[rowIndex, 11] = "'" + dr["ship_postal_code"].ToString();
+                        wSheet.Cells[rowIndex, 12] = "'" + dr["buyer_phone"].ToString();
+                        wSheet.Cells[rowIndex, 16] = dr["sku"].ToString();
+                        wSheet.Cells[rowIndex, 17] = "Phone case# " + dr["seller"].ToString() + "  " + dr["sku"].ToString();
+                        wSheet.Cells[rowIndex, 18] = "手机壳#1";
+                        wSheet.Cells[rowIndex, 20] = dr["quantity"].ToString();
+                        wSheet.Cells[rowIndex, 21] = 1;
+                        wSheet.Cells[rowIndex, 22] = 0.03;
+                        ++rowIndex;
+                    }
+                }
+
+                //****设置禁止弹出保存和覆盖的询问提示框 
+                excel.DisplayAlerts = false;
+                excel.AlertBeforeOverwriting = true;
+
+                //string
+
+                //保存
+                DateTime now = DateTime.Now;
+                //string destFilePath = String.Format(System.Environment.CurrentDirectory + "\\shippingInfo\\ship_{0}.xls", now.ToString(GlobalConfig.Instance.TimeFormat));
+                string destFilePath = String.Format(System.Environment.CurrentDirectory + "\\shippingInfo\\ship_pfc_{0}_{1}.xls", marketId, now.ToString(GlobalConfig.Instance.GetCommonConfigValue("timeFormat")));
+                wSheet.SaveAs(destFilePath, System.Type.Missing, System.Type.Missing, System.Type.Missing, System.Type.Missing, System.Type.Missing, System.Type.Missing, System.Type.Missing, System.Type.Missing, System.Type.Missing);
+                wBook.Save();
+                ///*****close excel 
+                wBook.Close();
+                excel.Quit();
+                //System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+                //System.Runtime.InteropServices.Marshal.ReleaseComObject(wSheet);
+                //System.Runtime.InteropServices.Marshal.ReleaseComObject(wBook);
+                wSheet = null;
+                wBook = null;
+                excel = null;
+                //System.GC.Collect(0);
+
+            }
+            catch (Exception er)
+            {
+
+                Console.WriteLine("Error in shipping File");
+            }
         }
 
         private void button23_Click(object sender, EventArgs e)
@@ -2333,13 +2635,13 @@ namespace AmazonTest
 
         private void button38_Click(object sender, EventArgs e)
         {
-
+            create_variation_size_color();
         }
 
         private void dgv_unshipped_order_ca_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
-            //SolidBrush solidBrush = new SolidBrush(dgv_unshipped_order_ca.RowHeadersDefaultCellStyle.ForeColor);
-            //e.Graphics.DrawString((e.RowIndex + 1).ToString(), e.InheritedRowStyle.Font, solidBrush, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + 5);
+            SolidBrush solidBrush = new SolidBrush(dgv_unshipped_order_ca.RowHeadersDefaultCellStyle.ForeColor);
+            e.Graphics.DrawString((e.RowIndex + 1).ToString(), e.InheritedRowStyle.Font, solidBrush, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + 5);
         }
 
         private void dgv_observed_order_ca_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -2368,32 +2670,32 @@ namespace AmazonTest
 
         private void button40_Click(object sender, EventArgs e)
         {
-            confirm_order();
+            //confirm_order();
         }
 
-        private void confirm_order()
+        private void confirm_order(string market_id)
         {
             // 从数据库获取待确认订单的数量
             DataSet ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
-                String.Format("select order_id, track_id, order_type  from t_order_basic where order_status=0 and is_confirmed=0 and order_type in (0, 1) and market_id='{0}'", marketId), null);
+                String.Format("select order_id, track_id, order_type  from t_order_basic where order_status=0 and is_confirmed=0 and order_type in (0, 1) and market_id='{0}'", market_id), null);
 
             // 弹出确认对话框
-            string msgBoxText = String.Format("请确定此次待确认订单数：{0}个？", ds.Tables[0].Rows.Count);
-            DialogResult dlgResult = MessageBox.Show(msgBoxText, "确认", MessageBoxButtons.OKCancel);
-            if (dlgResult == DialogResult.OK)
+            //string msgBoxText = String.Format("请确定此次待确认订单数：{0}个？", ds.Tables[0].Rows.Count);
+            //DialogResult dlgResult = MessageBox.Show(msgBoxText, "确认", MessageBoxButtons.OKCancel);
+            //if (dlgResult == DialogResult.OK)
             {
                 // 在亚马逊确认发货
                 //DateTime now = DateTime.Now.AddHours(-15);  // 转成亚马逊的当地时间
-                DateTime now = DateTime.Now.AddHours(-int.Parse(GlobalConfig.Instance.GetConfigValue(marketId, "timeDifference")));  // 转成亚马逊的当地时间
+                DateTime now = DateTime.Now.AddHours(-int.Parse(GlobalConfig.Instance.GetConfigValue(market_id, "timeDifference")));  // 转成亚马逊的当地时间
                 //string fileName = String.Format("confirmOrderFeed/confirmOrderFeed_{0}.txt", now.ToString(GlobalConfig.Instance.TimeFormat));
-                string fileName = String.Format("confirmOrderFeed/{0}_confirmOrderFeed_{1}.txt", marketId, now.ToString(GlobalConfig.Instance.GetCommonConfigValue("timeFormat")));
+                string fileName = String.Format("confirmOrderFeed/{0}_confirmOrderFeed_{1}.txt", market_id, now.ToString(GlobalConfig.Instance.GetCommonConfigValue("timeFormat")));
 
                 //*** 生成feed的txt文件
                 //*** order-id	order-item-id	quantity	ship-date	carrier-code	carrier-name	tracking-number	ship-method
                 //string ship_date = now.ToString(GlobalConfig.Instance.ShipDateFormat);
                 //string rowFormat = "{0}\t\t\t"+ ship_date +"\t"+ GlobalConfig.Instance.ShipCarrierCode + "\t"+ GlobalConfig.Instance.ShipCarrierName + "\t{1}\t";
                 string ship_date = now.ToString(GlobalConfig.Instance.GetCommonConfigValue("shipDateFormat"));
-                string rowFormat = "{0}\t\t\t" + ship_date + "\t" + GlobalConfig.Instance.GetConfigValue(marketId, "shipCarrierCode") + "\t" + GlobalConfig.Instance.GetConfigValue(marketId, "shipCarrierName") + "\t{1}\t";
+                string rowFormat = "{0}\t\t\t" + ship_date + "\t" + GlobalConfig.Instance.GetConfigValue(market_id, "shipCarrierCode") + "\t" + GlobalConfig.Instance.GetConfigValue(market_id, "shipCarrierName") + "\t{1}\t";
                 List<string> orderList = new List<string>();
 
                 // 标题行
@@ -2408,21 +2710,21 @@ namespace AmazonTest
 
                 //*** 调用submit feed方法
                 //MarketplaceWebServiceSamples.SubmitFeed(fileName, GlobalConfig.Instance.ConfirmOrderFeedType);
-                MarketplaceWebServiceSamples.SubmitFeed(marketId, fileName, GlobalConfig.Instance.GetCommonConfigValue("confirmOrderFeedType"));
+                MarketplaceWebServiceSamples.SubmitFeed(market_id, fileName, GlobalConfig.Instance.GetCommonConfigValue("confirmOrderFeedType"));
 
                 // 写入数据库
-                string cmdText = string.Format("update t_order_basic set is_confirmed=1,confirmed_date='{0}' where order_status=0 and is_confirmed=0 and order_type=0 and market_id='{1}'", ship_date, marketId);
+                string cmdText = string.Format("update t_order_basic set is_confirmed=1,confirmed_date='{0}' where order_status=0 and is_confirmed=0 and order_type=0 and market_id='{1}'", ship_date, market_id);
                 int affectedRowsCount = MySqlHelper.ExecuteNonQuery(MySqlHelper.Conn, System.Data.CommandType.Text, cmdText, null);
                 Console.WriteLine("Affected Rows: " + affectedRowsCount);
 
                 // 刷新datagridview
-                dgv_unshipped_order_BoundDS();
+                //dgv_unshipped_order_BoundDS();
             }
         }
 
         private void button41_Click(object sender, EventArgs e)
         {
-            confirm_order();
+            //confirm_order();
         }
 
         private void button1_Click_2(object sender, EventArgs e)
@@ -2434,6 +2736,99 @@ namespace AmazonTest
         {
             SolidBrush solidBrush = new SolidBrush(dgv_listing_offer.RowHeadersDefaultCellStyle.ForeColor);
             e.Graphics.DrawString((e.RowIndex + 1).ToString(), e.InheritedRowStyle.Font, solidBrush, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + 5);
+        }
+
+        private void button37_Click(object sender, EventArgs e)
+        {
+            create_bound_variation();
+        }
+
+        private void button39_Click(object sender, EventArgs e)
+        {
+            get_variation_result();
+        }
+
+        private void button35_Click(object sender, EventArgs e)
+        {
+            if (tb_variation_parent_filename_ca.Text.ToString() == "")
+            {
+                MessageBox.Show("文件名不能为空", "确认", MessageBoxButtons.OK);
+            }
+            else
+            {
+                System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + "\\" + tb_variation_parent_filename_ca.Text.ToString());
+            }
+        }
+
+        private void button36_Click(object sender, EventArgs e)
+        {
+            create_variation_parent();
+        }
+
+        private void button33_Click(object sender, EventArgs e)
+        {
+            if (tb_variation_child_filename_ca.Text.ToString() == "")
+            {
+                MessageBox.Show("文件名不能为空", "确认", MessageBoxButtons.OK);
+            }
+            else
+            {
+                System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + "\\" + tb_variation_child_filename_ca.Text.ToString());
+            }
+        }
+
+        private void button34_Click(object sender, EventArgs e)
+        {
+            append_size_color_to_child();
+        }
+
+        private void button31_Click(object sender, EventArgs e)
+        {
+            if (tb_variation_bound_filename_ca.Text.ToString() == "")
+            {
+                MessageBox.Show("文件名不能为空", "确认", MessageBoxButtons.OK);
+            }
+            else
+            {
+                System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + "\\" + tb_variation_bound_filename_ca.Text.ToString());
+            }
+        }
+
+        private void button32_Click(object sender, EventArgs e)
+        {
+            bound_child_with_parent();
+        }
+
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            // 生成皇家物流的订单文件
+            fillShipFile_PFC();
+            MessageBox.Show("导出成功！", "提示", MessageBoxButtons.OK);
+        }
+
+        private void button40_Click_1(object sender, EventArgs e)
+        {
+            DataSet ds = MySqlHelper.GetDataSet(MySqlHelper.Conn, System.Data.CommandType.Text,
+                    String.Format("select b.order_id, count(*) as sub_order_count from t_order_basic as a, t_order_product as b where a.order_id=b.order_id and a.order_status=0 and a.order_type=0 and a.market_id='{0}' group by b.order_id having count(*)>1;", marketId), null);
+           
+
+            DateTime now = DateTime.Now;
+            string fileName = String.Format("packOrderDetail\\{0}_mutilOrderDetail_{1}.txt", marketId, now.ToString(GlobalConfig.Instance.GetCommonConfigValue("timeFormat")));
+
+            //*** 生成txt文件
+            List<string> multiOrderCountList = new List<string>();
+
+            multiOrderCountList.Add(String.Format("{0}\t\t\t{1, 10}", "订单号", "包含的子订单个数"));
+
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                multiOrderCountList.Add(String.Format("{0}\t{1, 10}", dr["order_id"], dr["sub_order_count"]));
+            }
+
+            System.IO.File.WriteAllLines(fileName, multiOrderCountList);
+
+            // 打开文件
+            System.Diagnostics.Process.Start("notepad.exe", System.Environment.CurrentDirectory + "\\" + fileName);
         }
     }
 }
